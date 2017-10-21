@@ -1,7 +1,7 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (MiKTeX 2.9) (preloaded format=xelatex 2016.10.18)  20 OCT 2017 23:21
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (MiKTeX 2.9) (preloaded format=xelatex 2016.10.18)  21 OCT 2017 12:41
 entering extended mode
 **proposal.tex
-(E:\CS6630Project\proposal.tex
+(E:\CS6630Project\proposal\proposal.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for loaded.
 (D:\CTEX\MiKTeX\tex\latex\base\article.cls
@@ -281,7 +281,8 @@ tly
 )
 (D:\CTEX\MiKTeX\tex\latex\tools\indentfirst.sty
 Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
-) (E:\CS6630Project\proposal.aux)
+)
+(E:\CS6630Project\proposal\proposal.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
@@ -346,7 +347,8 @@ LaTeX Info: Redefining \ref on input line 14.
 LaTeX Info: Redefining \pageref on input line 14.
 LaTeX Info: Redefining \nameref on input line 14.
 
-(E:\CS6630Project\proposal.out) (E:\CS6630Project\proposal.out)
+(E:\CS6630Project\proposal\proposal.out)
+(E:\CS6630Project\proposal\proposal.out)
 \@outlinefile=\write3
 Requested font "cmr17" at 20.74pt
  -> cmr17
@@ -392,23 +394,24 @@ Requested font "cmex7" at 6.0pt
  -> cmex7
 Requested font "cmtt12" at 12.0pt
  -> cmtt12
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 40.
  [1
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 40.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 53.
+ [2]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 53.
 
-(E:\CS6630Project\proposal.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 40.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 40.
+(E:\CS6630Project\proposal\proposal.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 53.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 53.
  ) 
 Here is how much of TeX's memory you used:
  7230 strings out of 430478
- 97581 string characters out of 3191501
- 183472 words of memory out of 3000000
+ 97626 string characters out of 3191501
+ 185472 words of memory out of 3000000
  10331 multiletter control sequences out of 15000+200000
  9488 words of font info for 35 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 29i,6n,45p,225b,320s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,6n,45p,953b,321s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on proposal.pdf (1 page).
+Output written on proposal.pdf (2 pages).

@@ -1,12 +1,42 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 \usepackage{url}
 \usepackage{amsmath,amsthm,enumitem}
+\usepackage{geometry}
+\geometry{left=1.5cm, right= 1.5cm, top=2.5cm, bottom=2.5cm}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{hyperref}
+\usepackage{indentfirst}
 \title{CS6630 Project Proposal\\
        Visualization for flights ( ) of United States}
 \author{Run Li, Yulong Liang, Zhi Wang}
 
 \begin{document}
+
 \maketitle
+
+\section{Basic Information}
+    $\diamond$ The project title is "Visualization of flights () of United States".
+
+    $\diamond$ Group members:
+
+    $\quad\cdot$ Run Li, u0879939, $u0879939@utah.edu$
+
+    $\quad\cdot$ Yulong Liang,
+
+    $\quad\cdot$ Zhi Wang,
+
+    $\diamond$ The repository link: \url{https://github.com/zhiwang93/CS6630Project}
+
+\section{Background and Motivation}
+    Visualization can always give people more intuitional feelings about the data. the department of aviation in each country collects a great amount of data from their flights and airports. These data are necessary for the management of flights, the safety of passengers, and the improvement of the quality of aviation services. As an ordinary passenger, however, we may not realize how busy the sky is. We may often meet with flight delays, flight cancellations and other cases which we thought to be unexpected. But the visualization of data will tell us those unexpected cases are actually quite predictable. In this project, we will explore the data of all flights and airports in United States in the year of 2016. We expect to show some relationship between distributions of flights and their spatial and temporal conditions, so as to bring some intuitional feelings to passengers about how our aviation system is running everyday.
+\section{Project Objectives}
+    \noindent In this project, we expected to show
+\section{Data}
+\section{Data Processing}
+\section{Visualization Design}
+\section{Must-Have Features}
+\section{Optional Features}
+\section{Project Schedule}
+
 \end{document}
