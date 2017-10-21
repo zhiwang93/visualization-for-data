@@ -1,0 +1,12 @@
+\documentclass{article}
+\usepackage{url}
+\usepackage{amsmath,amsthm,enumitem}
+\usepackage{graphicx}
+\usepackage{float}
+\title{CS6630 Project Proposal\\
+       Visualization for flights ( ) of United States}
+\author{Run Li, Yulong Liang, Zhi Wang}
+
+\begin{document}
+\maketitle
+\end{document}
