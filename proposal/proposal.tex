@@ -68,6 +68,13 @@ In this project, we will explore an instance of visualization of the on-time per
 \section{Data Processing}
 
 \section{Visualization Design}
+
+The pivot of the visualization will be a map of the United States showing all the commercial airports around the country. These airports are represented by circles of different sizes depending on the level of annual enplanements and different colors depending on the on-time performances of a particular year. In the year chart, users may select the specific year which they want to be visualized. The default year will be the most recent year, in this case, the year of 2016.
+
+On the map, each circle which indicates an airport is interactive. Whenever the user hover onto an airport, a tooltip containing the detail as well as all the flight segments to and from the specific airport will appear. The tooltip information includes the state, city, runway information, airport facilities, annual enplanement, on-time performance, etc. The flight segments information shows all the airports this airport connecting with non-stop flights. The density and on-time performance of a particular segment are represented by the width and color of the path between the two airports.When the user moves the mouse cursor out, the information will disppear unless her/she click on the airport to pin it. A second click will unpin the information. It is also supported to click on several different airports to show the conprehensive information.
+
+Under the map are serveral elaborate statistical charts which show the annual change, monthly change and change during a day of the on-time performance for particular airport. The cause of delays is also provided under five major categories: air carrier delay, extreme weather delay, national aviation system delay, security delay and late arriving aircraft delay. These charts can also be drawn as the comparation among different years, airports or airlines.
+
 \section{Must-Have Features}
 \section{Optional Features}
 \section{Project Schedule}
