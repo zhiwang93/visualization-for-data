@@ -5,5 +5,8 @@
 \BOOKMARK [1][-]{section.5}{Data\040Processing}{}% 5
 \BOOKMARK [1][-]{section.6}{Visualization\040Design}{}% 6
 \BOOKMARK [1][-]{section.7}{Must-Have\040Features}{}% 7
-\BOOKMARK [1][-]{section.8}{Optional\040Features}{}% 8
-\BOOKMARK [1][-]{section.9}{Project\040Schedule}{}% 9
+\BOOKMARK [2][-]{subsection.7.1}{Connections\040between\040airports}{section.7}% 8
+\BOOKMARK [2][-]{subsection.7.2}{statistical\040charts}{section.7}% 9
+\BOOKMARK [1][-]{section.8}{Optional\040Features}{}% 10
+\BOOKMARK [2][-]{subsection.8.1}{Dynamic\040Effects}{section.8}% 11
+\BOOKMARK [1][-]{section.9}{Project\040Schedule}{}% 12
