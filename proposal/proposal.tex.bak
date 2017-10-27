@@ -24,7 +24,7 @@
 
     $\quad\cdot$ Yulong Liang, u1143816, $u1143816@utah.edu$
 
-    $\quad\cdot$ Zhi Wang,
+    $\quad\cdot$ Zhi Wang u0761669, $u0761669@utah.edu$
 
     $\diamond$ Project repository link: \url{https://github.com/zhiwang93/CS6630Project}
 
@@ -77,10 +77,42 @@ Under the map are several elaborate statistical charts which show the annual cha
 
 \section{Must-Have Features}
     \subsection{Connections between airports}
-    
-\section{Optional Features}
-\section{Project Schedule}
+    We will visualize the connections between airports with an image similar to the following:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=12cm]{G:/CS6630/CS6630Project/proposal/source/airportConnection.PNG}
+    \end{figure}
+    \noindent The final appearance should be:\\
+    $\diamond$ The initial image will show all the airports and highlight some important ones.\\
+    $\diamond$ When any airport is selected, it will highlight all the airports which have flights from or to it.\\
+    $\diamond$ The image will show the name, number of passengers, average delay of the selected airport and other useful related information.\\
+    $\diamond$ The image will show flight lines connected to the selected airport.
 
+    \subsection{statistical charts}
+    $\diamond$ A bar chart to show annual change of the on-time performance of the current airport.
+    $\diamond$ A bar chart to show monthly change of the on-time performance of the current airport.
+    $\diamond$ A bar chart to show daily change of the on-time performance of the current airport.
+    $\diamond$ A pie chart to show the distribution of the causes of flight delay.
+
+\section{Optional Features}
+    \subsection{Dynamic Effects}
+    We will add some dynamic effects if possible. For each airline, we will draw the airplane with a small object. It will move back and forth along the airline according to the actual flight time. Then in the image we will be able to overview the running of the whole U.S. aviation system.
+\section{Project Schedule}
+\begin{table}[H]
+\center
+  \begin{tabular}{c|l}
+  \hline
+  Week & Assignment\\
+  \hline
+  1 & Cleanup and extract data\\
+  2 & Build the frame and try to implement some basic features \\
+  3 & Implement Must-have features \\
+  4 & Implement Must-have features \\
+  5 & Try to implement optional feature and review\\
+  \hline
+\end{tabular}
+\end{table}
+    
 
 
 %\cite{2017delay}

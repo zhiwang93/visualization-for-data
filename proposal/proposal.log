@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.3-0.9997.5 (MiKTeX 2.9) (preloaded format=xelatex 2016.9.26)  27 OCT 2017 15:16
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (MiKTeX 2.9) (preloaded format=xelatex 2016.9.26)  27 OCT 2017 16:30
 entering extended mode
 **proposal.tex
 (G:\CS6630\CS6630Project\proposal\proposal.tex
@@ -403,7 +403,12 @@ File: G:/CS6630/CS6630Project/proposal/source/airportConnection.PNG Graphic fil
 e (type QTm)
 
 <use  "G:/CS6630/CS6630Project/proposal/source/airportConnection.PNG" >
-[3] (G:\CS6630\CS6630Project\proposal\proposal.bbl
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 93--97
+
+ []
+
+[4] (G:\CS6630\CS6630Project\proposal\proposal.bbl
 Requested font "cmtt8" at 8.0pt
  -> cmtt8
 Requested font "cmtt8" at 6.0pt
@@ -415,12 +420,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--24
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 130.
- [4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 130.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 131.
+ [5]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 131.
  (G:\CS6630\CS6630Project\proposal\proposal.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 130.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 130.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 131.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 131.
  ) 
 Here is how much of TeX's memory you used:
  7253 strings out of 430478
@@ -431,4 +436,4 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  29i,7n,45p,893b,323s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on proposal.pdf (4 pages).
+Output written on proposal.pdf (5 pages).
