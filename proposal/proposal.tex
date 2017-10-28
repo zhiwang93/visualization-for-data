@@ -71,14 +71,14 @@ In this project, we will explore an instance of visualization of the on-time per
 \section{Data Processing}
     \subsection{Geography data}
     Geography data is designed for the use of d3, so we directly use it without modification.
-    
+
     \subsection{Airport data}
     \begin{enumerate}
     \item Filter out commercial airports which is included in the airlines' on-time performance data report. Group other airports for future use.
     \item Filter out the useless data and extract useful information along with the latitude and longitude for each airport in Step 1.
     \item Join data like annual enplanements, delay rate, mishandled baggage rate, denied boarding rate and number of consumer complaints with Step 2.
     \end{enumerate}
-    
+
     \subsection{Flight operation data}
     \begin{enumerate}
     \item Calculate the elementary data needed such as annual/monthly/daily/hourly flight dencity, expectation of departure/arriving delay time, standard diviation of departure/arriving delay time, proportion of causes of delay, etc. for a specific segment (a departure and destination pair) of a specific airline.
@@ -102,7 +102,7 @@ Under the map are several elaborate statistical charts which show the annual cha
     We will visualize the connections between airports with an image similar to the following:
     \begin{figure}[H]
       \centering
-      \includegraphics[width=12cm]{G:/CS6630/CS6630Project/proposal/source/airportConnection.PNG}
+      \includegraphics[width=12cm]{E:/CS6630Project/proposal/source/airportConnection.PNG}
     \end{figure}
     \noindent The final appearance should be:\\
     $\diamond$ The initial image will show all the airports and highlight some important ones.\\
@@ -122,7 +122,7 @@ Under the map are several elaborate statistical charts which show the annual cha
 
 \section{Optional Features}
     \subsection{Narrative Visualization}
-    Come up with a way to visualize the data in a story-telling style, to ease the readers' exploration of the implicit information. 
+    Come up with a way to visualize the data in a story-telling style, to ease the readers' exploration of the implicit information.
     \subsection{Dynamic Effects}
     We will add some dynamic effects if possible. For each airline, we will draw the airplane with a small object. It will move back and forth along the airline according to the actual flight time. Then in the image we will be able to overview the running of the whole U.S. aviation system.
     This data is available on website FlightAware.com. It's possible if we can crawl those data down.
