@@ -49,7 +49,8 @@ In this project, we will explore an instance of visualization of the on-time per
     $\diamond$ A comparison between planned departing time and actual departing time.\\
     $\diamond$ A comparison between planned arriving time and actual arriving time.\\
     $\diamond$ The rate of diversion and cancellation.\\
-    $\diamond$ The expected delay.\\
+    $\diamond$ The temporal and spatial distribution of delayed flights.\\
+    $\diamond$ The percentage of causes of delay.\\
     $\diamond$ A view of the time evolution of the flights.
 
     With these visualizations, we will show how complicated the aviation system is and to reveal some relationship between the distribution of flights and their spatial and temporal conditions. We will see which area has the highest density of flights, which airport is the busiest, at what time we may expect a delayed flight, etc.
@@ -64,9 +65,29 @@ In this project, we will explore an instance of visualization of the on-time per
     \indent OurAirports: \url{ourairports.com}\\
     $\diamond$ Flight operation data:\\
     \indent Buerau of Transportation Statistics: \url{www.bts.gov}.
+    $\diamond$ Real-time flight dynamic data:\\
+    \indent FlightAware: \url{www.flightaware.com}.
 
 \section{Data Processing}
-    first do some sorting and summarization for the data, then Lists of most important data for our purpose , like departure airport data, destination airport and  like times data for the each flight.  then Associating the location data with the map and do the Aggregation for the map and all the data.
+    \subsection{Geography data}
+    Geography data is designed for the use of d3, so we directly use it without modification.
+    
+    \subsection{Airport data}
+    \begin{enumerate}
+    \item Filter out commercial airports which is included in the airlines' on-time performance data report. Group other airports for future use.
+    \item Filter out the useless data and extract useful information along with the latitude and longitude for each airport in Step 1.
+    \item Join data like annual enplanements, delay rate, mishandled baggage rate, denied boarding rate and number of consumer complaints with Step 2.
+    \end{enumerate}
+    
+    \subsection{Flight operation data}
+    \begin{enumerate}
+    \item Calculate the elementary data needed such as annual/monthly/daily/hourly flight dencity, expectation of departure/arriving delay time, standard diviation of departure/arriving delay time, proportion of causes of delay, etc. for a specific segment (a departure and destination pair) of a specific airline.
+    \item Calculate aggregation data for each airport using the data in Step 1.
+    \item Calculate aggregation data for each segment using the data in Step 1.
+    \item Calculate aggregation data for each airline using the data in Step 1.
+    \item Calculate aggregation data for any combination of airport, segment or airline using the data in Step 1.
+    \item Join aggregation operation data with airport data.
+    \end{enumerate}
 
 \section{Visualization Design}
 
@@ -85,25 +106,34 @@ Under the map are several elaborate statistical charts which show the annual cha
     \end{figure}
     \noindent The final appearance should be:\\
     $\diamond$ The initial image will show all the airports and highlight some important ones.\\
-    $\diamond$ When any airport is selected, it will highlight all the airports which have flights from or to it.\\
+    $\diamond$ The airports are scaled according to the level of annual enplanements (size of circle) and rate of delay (color of circle).\\
+    $\diamond$ When any airport is hovered/selected, it will highlight all the airports which it has flights from or to by a straight line.\\
+    $\diamond$ .The line are scaled according to the density of segments (line width) and rate of delay (line color)\\
     $\diamond$ The image will show the name, number of passengers, average delay of the selected airport and other useful related information.\\
-    $\diamond$ The image will show flight lines connected to the selected airport.
+    $\diamond$ A year chart will be placed above the chart in order to let readers select the specific year to display. (Default would be the current year.)
 
     \subsection{statistical charts}
     \noindent $\diamond$ A bar chart to show annual change of the on-time performance of the current airport.\\
     $\diamond$ A bar chart to show monthly change of the on-time performance of the current airport.\\
     $\diamond$ A bar chart to show daily change of the on-time performance of the current airport.\\
     $\diamond$ A pie chart to show the distribution of the causes of flight delay.\\
+    $\diamond$ Line charts to show the comparation between the selected airports in terms of years/months/days of a week/time of a day.\\
+    $\diamond$ Line charts to show the comparation between the selected airlines and other airlines in terms of years/months/days of a week/time of a day.\\
 
 \section{Optional Features}
+    \subsection{Narrative Visualization}
+    Come up with a way to visualize the data in a story-telling style, to ease the readers' exploration of the implicit information. 
     \subsection{Dynamic Effects}
     We will add some dynamic effects if possible. For each airline, we will draw the airplane with a small object. It will move back and forth along the airline according to the actual flight time. Then in the image we will be able to overview the running of the whole U.S. aviation system.
+    This data is available on website FlightAware.com. It's possible if we can crawl those data down.
     \subsection{Mishandled-Baggage Rate, Denied Boarding Rate \& Consumer Complains}
-    We will additionally summarize and analyze the mishandled Mishandled-Baggage Rate, Denied Boarding Rate and Consumer Complains for each airport and airline respectively.
+    To make it more considerable for the aviation consumers to improve understanding over the services provided by different airports and airlines. We will additionally summarize and analyze the Mishandled-Baggage Rate, Denied Boarding Rate and Number of Consumer Complains for each airport and airline respectively.
     \subsection{Tips for the Airport}
-    When each point on the map clicked it would show some kinds of tips for each airport. the information like the name of the airport and the enplanement for the airport and some data we calculated for this airport will also be displayed.
+    When any of the airports on the map are hovered, it would show some kinds of tips for the overview of an airport. Information displayed includes name, location, enplanement, number of airports connected, rate of delay, etc.
     \subsection{Airport Points Map}
-    We will implement the map that is based on data instead of using US map : since we have a lot of airport data we may be able to construct the map with the data point (each data will have the location and we use scale to modify the location data for making our own map).
+    We will implement a map that is simply composed of circles which indicate more than 18,000 airports in US instead of using a typical US map. Since we have a lot of airport data we may be able to construct the map with the data point (each data will have the location and we use scale to modify the location data for making our own map).
+    \subsection{Map Zooming with brush}
+    Zoom in/out the map with brush to switch between overall and detailed map.
 \section{Project Schedule}
 \begin{table}[H]
 \center
