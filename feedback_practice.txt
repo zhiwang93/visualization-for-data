@@ -1,0 +1,11 @@
+The feedback is from Aashish Ghimire. He is the only member of his group.
+
+1. We may want to add a dropdown box to analyze the data of each airline respectively.
+
+2. We may focus on more about the arriving delay data than the departure delay data as the arriving time is more important. Although the departure delay is likely to cause an arriving delay, the arriving time is critical crucial thing that will effect the schedule of a passenger.
+
+3. When analyzing the cancellation rate (optional feature), add a pie chart to show the distribution of causes.
+
+4. We may want to separate our big data table into a few smaller ones. Then pick up the particular table as needed. This may avoid a super slow loading of the web page.
+
+We think the suggestions he gave us are rather helpful. we will try to follow those suggestions and improve our visualization design.
