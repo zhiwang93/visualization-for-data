@@ -1,0 +1,47 @@
+.airportname{
+    fill: darkcyan;
+    font-family: "AR BLANCA";
+    font-size: 40px;
+    text-anchor: start;
+
+}
+
+
+.bar1{
+    fill: red;
+    stroke: gray;
+    stroke-width: 1px;
+}
+button{
+    border-radius: 50%;
+    text-align: center;
+    background-color: darkcyan;
+    color: white;
+}
+
+body {
+    font-family: Lato;
+}
+
+.clicked{}
+
+h1 {
+    font-size:35px;
+    margin: 0px;
+    padding: 0px;
+    margin-left: 20px;
+}
+
+.hovered{}
+
+.info{
+    margin-left: 20px;
+}
+
+
+
+.spot{
+    stroke-width: 1px;
+    stroke: black;
+    fill: green;
+}
