@@ -38,7 +38,18 @@ h1 {
     margin-left: 20px;
 }
 
+.mappath{
+    stroke: #fff;
+    stroke-width: 1;
+    fill: steelBlue;
+    opacity: 0.2;
+}
 
+.route{
+    stroke: green;
+    stroke-width: 2;
+    opacity: 0.3;
+}
 
 .spot{
     stroke-width: 1px;
