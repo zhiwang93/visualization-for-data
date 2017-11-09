@@ -1,14 +1,9 @@
 
-function update(month) {
-    d3.csv("dataset/airports" + month + ".csv", function (error, airports) {
-        let usmap = new Usmap(airports);
-        console.log(airports);
-        usmap.update1();
-    });
-}
-
-let month = document.getElementById("months").value;
-console.log(month);
-update(month);
+d3.csv("dataset/us-airports.csv", function (error, airports) {
+    let usmap = new Usmap(airports);
+    console.log(airports);
+    usmap.makeMap1();
+    usmap.update1();
+});
 
 
