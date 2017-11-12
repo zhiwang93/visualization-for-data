@@ -124,11 +124,11 @@ class Usmap{
                 }
                 else{
                     var dataset = [
-                        {legend: "Carrier Delay", value: 0, color: "red"},
-                        {legend: "Weather Delay", value: 0, color: "yellow"},
-                        {legend: "NASA Delay", value: 0, color: "green"},
-                        {legend: "Security Delay", value: 0, color: "pink"},
-                        {legend: "Late Aircraft Delay", value: 0, color: "blue"}
+                        {legend: "", value: 0, color: "red"},
+                        {legend: "", value: 0, color: "yellow"},
+                        {legend: "", value: 0, color: "green"},
+                        {legend: "", value: 0, color: "pink"},
+                        {legend: "", value: 0, color: "blue"}
                     ];
                 }
 
