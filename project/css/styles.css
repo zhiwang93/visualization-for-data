@@ -6,12 +6,44 @@
 
 }
 
+.airportsummary{
+    font-family: "AR DARLING";
+    font-size: 40px;
+    text-anchor: start;
+    fill: purple;
+}
 
-.bar1{
+.arc text {
+    font: 12px sans-serif;
+    text-anchor: middle;
+}
+
+.arc path {
+    stroke: #fff;
+}
+
+.author{
+    font-family: Arial;
+    font-size: 25px;
+    text-anchor: start;
     fill: red;
+}
+.bar1{
+    fill: pink;
     stroke: gray;
     stroke-width: 1px;
 }
+.bar2{
+    fill: LightGreen;
+    stroke: gray;
+    stroke-width: 1px;
+}
+.bar3{
+    fill: LightBlue;
+    stroke: gray;
+    stroke-width: 1px;
+}
+
 button{
     border-radius: 50%;
     text-align: center;
@@ -55,4 +87,18 @@ h1 {
     stroke-width: 1px;
     stroke: black;
     fill: green;
+}
+
+.summaryitem{
+    font-family: "AR DARLING";
+    font-size: 25px;
+    text-anchor: start;
+    fill: blue;
+}
+
+.summaryvalue{
+    font-family: "Algerian";
+    font-size: 18px;
+    text-anchor: start;
+    fill: brown;
 }
