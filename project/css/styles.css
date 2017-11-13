@@ -28,6 +28,20 @@
     text-anchor: start;
     fill: red;
 }
+
+.xaxis path,
+.xaxis line {
+    fill: none;
+    stroke: none;
+}
+
+.yaxis path,
+.yaxis line {
+    fill: none;
+    stroke: black;
+    stroke-width: 1px;
+}
+
 .bar1{
     fill: pink;
     stroke: gray;

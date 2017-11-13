@@ -52,7 +52,6 @@ class Usmap{
                 airportsmap[airports[i].iata_code] = projection([airports[i].lon, airports[i].lat]);
             }
         }
-        console.log(airportsmap);
         let g2 = d3.select("#usmap").append("g")
             .attr("id", "spots");
 
@@ -155,12 +154,10 @@ class Usmap{
                 g.append("path")
                     .attr("d", arc)
                     .attr("fill", function(x){
-                        console.log(x);
                         return x.data.color; })
 
                 g.append("text")
                     .attr("transform", function(x) {
-                        console.log(x);
                         return "translate(" + arc.centroid(x)[0]*2.2 + "," + arc.centroid(x)[1]*2.2 + ")"; })
                     .style("class", "arc")
                     .text(function(x) { return x.data.legend; });
@@ -217,7 +214,16 @@ class Usmap{
                         .domain([0, d3.max(flightdata) * 1.2])
                         .range([0, 200]);
 
-                    let fg = d3.select("#bar1").attr("transform", "translate(50, 200) scale(1,-1)");
+                    let yScale1 = d3.scale.linear()
+                        .domain([d3.max(flightdata) * 1.2, 0])
+                        .range([0, 200]);
+
+                    var bar1y = d3.svg.axis().scale(yScale1).orient("left");
+                    d3.select("#y1").attr("transform", "translate(100,10)")
+                        .transition().duration(3000)
+                        .attr("class", "yaxis").call(bar1y);
+
+                    let fg = d3.select("#bar1").attr("transform", "translate(100, 210) scale(1,-1)");
                     fg.selectAll("rect").remove();
                     let flight = fg.selectAll("rect").data(flightdata).enter().append("rect")
                         .attr("x", function (a, i) {
@@ -250,8 +256,16 @@ class Usmap{
                     let depScale = d3.scale.linear()
                         .domain([0, d3.max(depdata) * 1.2])
                         .range([0, 200]);
+                    let yScale2 = d3.scale.linear()
+                        .domain([d3.max(depdata) * 1.2, 0])
+                        .range([0, 200]);
 
-                    let dg = d3.select("#bar2").attr("transform", "translate(350, 200) scale(1,-1)");
+                    var bar2y = d3.svg.axis().scale(yScale2).orient("left");
+                    d3.select("#y2").attr("transform", "translate(500,10)")
+                        .transition().duration(3000)
+                        .attr("class", "yaxis").call(bar2y);
+
+                    let dg = d3.select("#bar2").attr("transform", "translate(500, 210) scale(1,-1)");
                     dg.selectAll("rect").remove();
                     let dep = dg.selectAll("rect").data(depdata).enter().append("rect")
                         .attr("x", function (a, i) {
@@ -284,8 +298,16 @@ class Usmap{
                     let arrScale = d3.scale.linear()
                         .domain([0, d3.max(arrdata) * 1.2])
                         .range([0, 200]);
+                    let yScale3 = d3.scale.linear()
+                        .domain([d3.max(arrdata) * 1.2, 0])
+                        .range([0, 200]);
 
-                    let ag = d3.select("#bar3").attr("transform", "translate(650, 200) scale(1,-1)");
+                    var bar3y = d3.svg.axis().scale(yScale3).orient("left");
+                    d3.select("#y3").attr("transform", "translate(900,10)")
+                        .transition().duration(3000)
+                        .attr("class", "yaxis").call(bar3y);
+
+                    let ag = d3.select("#bar3").attr("transform", "translate(900, 210) scale(1,-1)");
                     ag.selectAll("rect").remove();
                     let arr = ag.selectAll("rect").data(arrdata).enter().append("rect")
                         .attr("x", function (a, i) {
@@ -325,7 +347,16 @@ class Usmap{
                         .domain([0, d3.max(flightdata) * 1.2])
                         .range([0, 200]);
 
-                    let fg = d3.select("#bar4").attr("transform", "translate(50, 200) scale(1,-1)");
+                    let yScale4 = d3.scale.linear()
+                        .domain([d3.max(flightdata) * 1.2, 0])
+                        .range([0, 200]);
+
+                    var bar4y = d3.svg.axis().scale(yScale4).orient("left");
+                    d3.select("#y4").attr("transform", "translate(100,10)")
+                        .transition().duration(3000)
+                        .attr("class", "yaxis").call(bar4y);
+
+                    let fg = d3.select("#bar4").attr("transform", "translate(100, 210) scale(1,-1)");
                     fg.selectAll("rect").remove();
                     let flight = fg.selectAll("rect").data(flightdata).enter().append("rect")
                         .attr("x", function (a, i) {
@@ -353,8 +384,16 @@ class Usmap{
                     let depScale = d3.scale.linear()
                         .domain([0, d3.max(depdata) * 1.2])
                         .range([0, 200]);
+                    let yScale5 = d3.scale.linear()
+                        .domain([d3.max(depdata) * 1.2, 0])
+                        .range([0, 200]);
 
-                    let dg = d3.select("#bar5").attr("transform", "translate(350, 200) scale(1,-1)");
+                    var bar5y = d3.svg.axis().scale(yScale5).orient("left");
+                    d3.select("#y5").attr("transform", "translate(500,10)")
+                        .transition().duration(3000)
+                        .attr("class", "yaxis").call(bar5y);
+
+                    let dg = d3.select("#bar5").attr("transform", "translate(500, 210) scale(1,-1)");
                     dg.selectAll("rect").remove();
                     let dep = dg.selectAll("rect").data(depdata).enter().append("rect")
                         .attr("x", function (a, i) {
@@ -382,8 +421,16 @@ class Usmap{
                     let arrScale = d3.scale.linear()
                         .domain([0, d3.max(arrdata) * 1.2])
                         .range([0, 200]);
+                    let yScale6 = d3.scale.linear()
+                        .domain([d3.max(arrdata) * 1.2, 0])
+                        .range([0, 200]);
 
-                    let ag = d3.select("#bar6").attr("transform", "translate(650, 200) scale(1,-1)");
+                    var bar6y = d3.svg.axis().scale(yScale6).orient("left");
+                    d3.select("#y6").attr("transform", "translate(900,10)")
+                        .transition().duration(3000)
+                        .attr("class", "yaxis").call(bar6y);
+
+                    let ag = d3.select("#bar6").attr("transform", "translate(900, 210) scale(1,-1)");
                     ag.selectAll("rect").remove();
                     let arr = ag.selectAll("rect").data(arrdata).enter().append("rect")
                         .attr("x", function (a, i) {
@@ -399,6 +446,166 @@ class Usmap{
                             return arrScale(a);
                         })
                         .attr("class", "bar2");
+                }
+            });
+
+            d3.csv("dataset/ByHour.csv", function (ByHour) {
+                let data = null;
+                for (let i = 0; i < ByHour.length; i++) {
+                    if (d.iata_code == ByHour[i].Origin) {
+                        data = ByHour[i];
+                        break;
+                    }
+                }
+                console.log(data);
+                if (data != null) {
+                    let flightdata = [parseFloat(data["00.FlightCount"]),
+                        parseFloat(data["06.FlightCount"]),
+                        parseFloat(data["07.FlightCount"]),
+                        parseFloat(data["08.FlightCount"]),
+                        parseFloat(data["09.FlightCount"]),
+                        parseFloat(data["10.FlightCount"]),
+                        parseFloat(data["11.FlightCount"]),
+                        parseFloat(data["12.FlightCount"]),
+                        parseFloat(data["13.FlightCount"]),
+                        parseFloat(data["14.FlightCount"]),
+                        parseFloat(data["15.FlightCount"]),
+                        parseFloat(data["16.FlightCount"]),
+                        parseFloat(data["17.FlightCount"]),
+                        parseFloat(data["18.FlightCount"]),
+                        parseFloat(data["19.FlightCount"]),
+                        parseFloat(data["20.FlightCount"]),
+                        parseFloat(data["21.FlightCount"]),
+                        parseFloat(data["22.FlightCount"]),
+                        parseFloat(data["23.FlightCount"])];
+
+                    let flightDataScale = d3.scale.linear()
+                        .domain([0, d3.max(flightdata) * 1.2])
+                        .range([0, 200]);
+                    let yScale7 = d3.scale.linear()
+                        .domain([d3.max(flightdata) * 1.2, 0])
+                        .range([0, 200]);
+
+                    var bar7y = d3.svg.axis().scale(yScale7).orient("left");
+                    d3.select("#y7").attr("transform", "translate(100,10)")
+                        .transition().duration(3000)
+                        .attr("class", "yaxis").call(bar7y);
+
+                    let fg = d3.select("#bar7").attr("transform", "translate(100, 210) scale(1,-1)");
+                    fg.selectAll("rect").remove();
+                    let flight = fg.selectAll("rect").data(flightdata).enter().append("rect")
+                        .attr("x", function (a, i) {
+                            return i * 13;
+                        })
+                        .attr("y", 0)
+                        .attr("width", 13)
+                        .attr("height", 0);
+                    flight.transition().duration(3000).delay(function (a, i) {
+                        return i * 50;
+                    })
+                        .attr("height", function (a) {
+                            return flightDataScale(a);
+                        })
+                        .attr("class", "bar3");
+
+                    let depdata = [data["00.DepDly"]/data["00.FlightCount"],
+                        parseFloat(data["06.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["07.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["08.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["09.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["10.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["11.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["12.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["13.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["14.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["15.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["16.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["17.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["18.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["19.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["20.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["21.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["22.DepDly"]/data["00.FlightCount"]),
+                        parseFloat(data["23.DepDly"]/data["00.FlightCount"])];
+
+                    let depScale = d3.scale.linear()
+                        .domain([0, d3.max(depdata) * 1.2])
+                        .range([0, 200]);
+                    let yScale8 = d3.scale.linear()
+                        .domain([d3.max(depdata) * 1.2, 0])
+                        .range([0, 200]);
+
+                    var bar8y = d3.svg.axis().scale(yScale8).orient("left");
+                    d3.select("#y8").attr("transform", "translate(500,10)")
+                        .transition().duration(3000)
+                        .attr("class", "yaxis").call(bar8y);
+
+                    let dg = d3.select("#bar8").attr("transform", "translate(500, 210) scale(1,-1)");
+                    dg.selectAll("rect").remove();
+                    let dep = dg.selectAll("rect").data(depdata).enter().append("rect")
+                        .attr("x", function (a, i) {
+                            return i * 13;
+                        })
+                        .attr("y", 0)
+                        .attr("width", 13)
+                        .attr("height", 0);
+                    dep.transition().duration(3000).delay(function (a, i) {
+                        return i * 50;
+                    })
+                        .attr("height", function (a) {
+                            return depScale(a);
+                        })
+                        .attr("class", "bar3");
+
+                    let arrdata = [data["00.ArrDly"]/data["00.FlightCount"],
+                        parseFloat(data["06.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["07.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["08.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["09.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["10.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["11.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["12.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["13.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["14.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["15.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["16.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["17.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["18.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["19.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["20.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["21.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["22.ArrDly"]/data["00.FlightCount"]),
+                        parseFloat(data["23.ArrDly"]/data["00.FlightCount"])];
+
+                    let arrScale = d3.scale.linear()
+                        .domain([0, d3.max(arrdata) * 1.2])
+                        .range([0, 200]);
+                    let yScale9 = d3.scale.linear()
+                        .domain([d3.max(arrdata) * 1.2, 0])
+                        .range([0, 200]);
+
+                    var bar9y = d3.svg.axis().scale(yScale9).orient("left");
+                    d3.select("#y9").attr("transform", "translate(900,10)")
+                        .transition().duration(3000)
+                        .attr("class", "yaxis").call(bar9y);
+
+
+                    let ag = d3.select("#bar9").attr("transform", "translate(900, 210) scale(1,-1)");
+                    ag.selectAll("rect").remove();
+                    let arr = ag.selectAll("rect").data(arrdata).enter().append("rect")
+                        .attr("x", function (a, i) {
+                            return i * 13;
+                        })
+                        .attr("y", 0)
+                        .attr("width", 13)
+                        .attr("height", 0);
+                    arr.transition().duration(3000).delay(function (a, i) {
+                        return i * 50;
+                    })
+                        .attr("height", function (a) {
+                            return arrScale(a);
+                        })
+                        .attr("class", "bar3");
                 }
             });
         });
