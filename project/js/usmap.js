@@ -8,13 +8,13 @@ class Usmap{
         console.log(this.airportsmap);
 
         this.offsetX = 0;
-        this.offsetY = 0;
+        this.offsetY = 10;
         this.mapWidth = 1600;
         this.mapHeight = 1000;
 
         this.projection = d3.geo.albersUsa()
             .translate([this.mapWidth / 2, this.mapHeight / 2])
-            .scale([this.mapWidth * 1.38]);
+            .scale([this.mapWidth * 1.36]);
     }
 
     makeMap1(){
@@ -48,6 +48,8 @@ class Usmap{
 
         let projection = this.projection;
         let updateCard = this.updateCard;
+        let updatePie = this.updatePie;
+
         d3.select("#usmap").select("#spots").remove();
         d3.select("#usmap").selectAll("line").remove();
         d3.select("#summary").selectAll(".summaryvalue").remove();
@@ -81,113 +83,82 @@ class Usmap{
             .attr("class", "spot");
 
         spots.on("click", function (d) {
-            updateCard(d);
 
             g2.selectAll("text").remove();
             g2.selectAll("line").remove();
             d3.selectAll(".summaryvalue").remove();
             d3.selectAll(".arc").remove();
-            let names = g2.append("text")
-                .text(function () {
-                    return d.name;
-                })
-                .attr("x", 20)
-                .attr("y", 50)
-                .attr("class", "airportname");
 
-            d3.select("#summary").append("text").attr("x", 80).attr("y", 98)
-                .text(function () {
-                    return d.name
-                })
-                .attr("class", "summaryvalue");
-            d3.select("#summary").append("text").attr("x", 140).attr("y", 128)
-                .text(function () {
-                    return d.iata_code
-                })
-                .attr("class", "summaryvalue");
-            d3.select("#summary").append("text").attr("x", 75).attr("y", 158)
-                .text(function () {
-                    return d.type
-                })
-                .attr("class", "summaryvalue");
+            updateCard(d);
+            updatePie(d);
 
-            d3.csv("dataset/Summary.csv", function (summary) {
-                console.log(summary);
-                let data = null;
-                for (let i = 0; i < summary.length; i++) {
-                    if (d.iata_code == summary[i].Origin) {
-                        data = summary[i];
-                        break;
-                    }
-                }
-                d3.select("#summary").append("text").attr("x", 135).attr("y", 188)
-                    .text(function () {
-                        return data == null ? 0 : data.TotalFlightCount;
-                    })
-                    .attr("class", "summaryvalue");
-                d3.select("#summary").append("text").attr("x", 175).attr("y", 218)
-                    .text(function () {
-                        return (data == null ? 0 : data.AvgDly) + " minutes";
-                    })
-                    .attr("class", "summaryvalue");
-
-                var dataset;
-                if (data != null) {
-                    var dataset = [
-                        {legend: "Carrier Delay", value: data["TotalCarrierDly"], color: "red"},
-                        {legend: "Weather Delay", value: data["TotalWeatherDly"], color: "yellow"},
-                        {legend: "NASA Delay", value: data["TotalNASDly"], color: "green"},
-                        {legend: "Security Delay", value: data["TotalSecurityDly"], color: "pink"},
-                        {legend: "Late Aircraft Delay", value: data["TotalLateAircraftDly"], color: "blue"}
-                    ];
-                }
-                else {
-                    var dataset = [
-                        {legend: "", value: 0, color: "red"},
-                        {legend: "", value: 0, color: "yellow"},
-                        {legend: "", value: 0, color: "green"},
-                        {legend: "", value: 0, color: "pink"},
-                        {legend: "", value: 0, color: "blue"}
-                    ];
-                }
-
-                var radius = 150;
-
-                var svg = d3.select("#summary")
-                    .append("g")
-                    .attr("transform", "translate(270,400)");
-
-                var arc = d3.svg.arc()
-                    .outerRadius(radius)
-                    .innerRadius(30);
-
-                var pie = d3.layout.pie()
-                    .sort(null)
-                    .value(function (x) {
-                        return x.value;
-                    });
-
-                var g = svg.selectAll(".arc")
-                    .data(pie(dataset))
-                    .enter()
-                    .append("g")
-                    .attr("class", "arc");
-
-                g.append("path")
-                    .attr("d", arc)
-                    .attr("fill", function (x) {
-                        return x.data.color;
-                    })
-
-                g.append("text")
-                    .attr("transform", function (x) {
-                        return "translate(" + arc.centroid(x)[0] * 2.2 + "," + arc.centroid(x)[1] * 2.2 + ")";
-                    })
-                    .style("class", "arc")
-                    .text(function (x) {
-                        return x.data.legend;
-                    });
-            });
+            // d3.csv("dataset/Summary.csv", function (summary) {
+            //     console.log(summary);
+            //     let data = null;
+            //     for (let i = 0; i < summary.length; i++) {
+            //         if (d.iata_code == summary[i].Origin) {
+            //             data = summary[i];
+            //             break;
+            //         }
+            //     }
+            //
+            //     var dataset;
+            //     if (data != null) {
+            //         var dataset = [
+            //             {legend: "Carrier Delay", value: data["TotalCarrierDly"], color: "red"},
+            //             {legend: "Weather Delay", value: data["TotalWeatherDly"], color: "yellow"},
+            //             {legend: "NASA Delay", value: data["TotalNASDly"], color: "green"},
+            //             {legend: "Security Delay", value: data["TotalSecurityDly"], color: "pink"},
+            //             {legend: "Late Aircraft Delay", value: data["TotalLateAircraftDly"], color: "blue"}
+            //         ];
+            //     }
+            //     else {
+            //         var dataset = [
+            //             {legend: "", value: 0, color: "red"},
+            //             {legend: "", value: 0, color: "yellow"},
+            //             {legend: "", value: 0, color: "green"},
+            //             {legend: "", value: 0, color: "pink"},
+            //             {legend: "", value: 0, color: "blue"}
+            //         ];
+            //     }
+            //
+            //     var radius = 150;
+            //
+            //     var svg = d3.select("#summary")
+            //         .append("g")
+            //         .attr("transform", "translate(270,400)");
+            //
+            //     var arc = d3.svg.arc()
+            //         .outerRadius(radius)
+            //         .innerRadius(30);
+            //
+            //     var pie = d3.layout.pie()
+            //         .sort(null)
+            //         .value(function (x) {
+            //             return x.value;
+            //         });
+            //
+            //     var g = svg.selectAll(".arc")
+            //         .data(pie(dataset))
+            //         .enter()
+            //         .append("g")
+            //         .attr("class", "arc");
+            //
+            //     g.append("path")
+            //         .attr("d", arc)
+            //         .attr("fill", function (x) {
+            //             return x.data.color;
+            //         })
+            //
+            //     g.append("text")
+            //         .attr("transform", function (x) {
+            //             return "translate(" + arc.centroid(x)[0] * 2.2 + "," + arc.centroid(x)[1] * 2.2 + ")";
+            //         })
+            //         .style("class", "arc")
+            //         .text(function (x) {
+            //             return x.data.legend;
+            //         });
+            // });
 
 
             d3.csv("dataset/airportconnection.csv", function (connections) {
@@ -351,44 +322,6 @@ class Usmap{
                         .attr("class", "bar1");
                 }
             });
-        });
-    }
-
-    updateCard(d) {
-        console.log(d)
-        let card = d3.select("#paneldiv")
-            .attr("style", "opacity: 1")
-        let title = d3.select("#card_title")
-            .text(d.name)
-        let enplanement = d3.select("#card_enplanement")
-            .text("Enplanement: "+"no data")
-        let dep_delay = d3.select("#card_dep_delay")
-            .text("Departure Delay: "+"no data")
-        let arr_delay = d3.select("#card_arr_delay")
-            .text("Arriving Delay: "+"no data")
-        let latitude = d3.select("#card_latitude")
-            .text("Latitude: "+d.lat)
-        let longitude = d3.select("#card_longitude")
-            .text("Longitude: "+d.lon)
-    }
-
-    // updateTop10(){
-    //     let airports = this.airports.slice(0, 10);
-    //     d3.select("#top10").select("svg").remove();
-    //
-    //     let svg = d3.select("#top10").append("svg")
-    //         .attr("width", 500);
-    //     .attr("height", 260);
-    //
-    //     let g = svg.append("g");
-    //     let bars = g.selectAll("rect").data(airports);
-    //     bars.enter().append("rect")
-    //         .attr("x", 0)
-    //         .attr("y", function(d, i){return i*20;})
-    //         .attr("height", 20)
-    //         .attr("width", function(d){return })
-    //
-    // }
 
             d3.csv("dataset/ByWeek.csv", function (ByWeek) {
                 let data = null;
@@ -674,4 +607,128 @@ class Usmap{
             });
         });
     }
+
+    updateCard(d) {
+        let card = d3.select("#carddiv")
+            .attr("style", "opacity: 1")
+        let title = d3.select("#card_title")
+            .text(d.name)
+        let iata = d3.select("#card_iata")
+            .text("IATA Code: "+d.iata_code)
+        let type = d3.select("#card_type")
+            .text("Airport Type: "+d.type)
+        let latitude = d3.select("#card_latitude")
+            .text("Latitude: "+d.lat)
+        let longitude = d3.select("#card_longitude")
+            .text("Longitude: "+d.lon)
+
+        d3.csv("dataset/Summary.csv", function (summary) {
+            let data = null;
+            for (let i = 0; i < summary.length; i++) {
+                if (d.iata_code == summary[i].Origin) {
+                    data = summary[i];
+                    break;
+                }
+            }
+            let count = d3.select("#card_count")
+                .text(function () {
+                    let result = "Annual Flights: ";
+                    result += data == null ? "" : data.TotalFlightCount;
+                    return result;
+                });
+            let delay = d3.select("#card_delay")
+                .text(function () {
+                    let result = "Average Delay: ";
+                    result += data == null ? "" : data.AvgDly + " minutes";
+                    return result;
+                });
+        });
+    }
+
+    updatePie(d) {
+        d3.csv("dataset/Summary.csv", function (summary) {
+            let data = null;
+            for (let i = 0; i < summary.length; i++) {
+                if (d.iata_code == summary[i].Origin) {
+                    data = summary[i];
+                    break;
+                }
+            }
+
+            let dataset;
+            if (data != null) {
+                dataset = [
+                    {legend: "Carrier Delay", value: data["TotalCarrierDly"], color: "red"},
+                    {legend: "Weather Delay", value: data["TotalWeatherDly"], color: "yellow"},
+                    {legend: "NASA Delay", value: data["TotalNASDly"], color: "green"},
+                    {legend: "Security Delay", value: data["TotalSecurityDly"], color: "pink"},
+                    {legend: "Late Aircraft Delay", value: data["TotalLateAircraftDly"], color: "blue"}
+                ];
+            }
+            else {
+                dataset = [
+                    {legend: "", value: 0, color: "red"},
+                    {legend: "", value: 0, color: "yellow"},
+                    {legend: "", value: 0, color: "green"},
+                    {legend: "", value: 0, color: "pink"},
+                    {legend: "", value: 0, color: "blue"}
+                ];
+            }
+
+            let radius = 150;
+
+            let svg = d3.select("#summary")
+                .append("g")
+                .attr("transform", "translate(270,400)");
+
+            let arc = d3.svg.arc()
+                .outerRadius(radius)
+                .innerRadius(30);
+
+            let pie = d3.layout.pie()
+                .sort(null)
+                .value(function (x) {
+                    return x.value;
+                });
+
+            let g = svg.selectAll(".arc")
+                .data(pie(dataset))
+                .enter()
+                .append("g")
+                .attr("class", "arc");
+
+            g.append("path")
+                .attr("d", arc)
+                .attr("fill", function (x) {
+                    return x.data.color;
+                })
+
+            g.append("text")
+                .attr("transform", function (x) {
+                    return "translate(" + arc.centroid(x)[0] * 2.2 + "," + arc.centroid(x)[1] * 2.2 + ")";
+                })
+                .style("class", "arc")
+                .text(function (x) {
+                    return x.data.legend;
+                });
+        });
+    }
+
+    // updateTop10(){
+    //     let airports = this.airports.slice(0, 10);
+    //     d3.select("#top10").select("svg").remove();
+    //
+    //     let svg = d3.select("#top10").append("svg")
+    //         .attr("width", 500);
+    //     .attr("height", 260);
+    //
+    //     let g = svg.append("g");
+    //     let bars = g.selectAll("rect").data(airports);
+    //     bars.enter().append("rect")
+    //         .attr("x", 0)
+    //         .attr("y", function(d, i){return i*20;})
+    //         .attr("height", 20)
+    //         .attr("width", function(d){return })
+    //
+    // }
 }

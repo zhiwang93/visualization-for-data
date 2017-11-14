@@ -15,20 +15,23 @@
 
 <body>
 <div class="div-container">
-    <h1 style="text-align: center; color: brown">Visualization for Flights On-time Performance of the United States</h1>
+    <h3>Visualization for Flight On-time Performance of the United States</h3>
+
+    <hr>
     <div class="row">
-        <div id="mapdiv" class="col-lg-9">
+        <div id="mapdiv" class="col-xl-9">
             <svg id="usmap"></svg>
         </div>
-        <div id="paneldiv" class="col-lg-3" style="opacity: 0">
-            <div class="card card2">
+        <div id="paneldiv" class="col-xl-3 card2">
+            <div id="carddiv" style="opacity: 0;">
                 <div class="card-body">
                     <h4 id="card_title" class="card-title"></h4>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li id="card_enplanement" class="list-group-item"></li>
-                    <li id="card_dep_delay" class="list-group-item"></li>
-                    <li id="card_arr_delay" class="list-group-item"></li>
+                    <li id="card_iata" class="list-group-item"></li>
+                    <li id="card_type" class="list-group-item"></li>
+                    <li id="card_count" class="list-group-item"></li>
+                    <li id="card_delay" class="list-group-item"></li>
                     <li id="card_latitude" class="list-group-item"></li>
                     <li id="card_longitude" class="list-group-item"></li>
                 </ul>
@@ -66,24 +69,9 @@
             <g id="y9"></g>
         </svg>
     </div>
-    <div id="cause" class="view"></div>
-
-        <div>
-            <svg id="usmap2" width="62%" height="600" style="float: left">
-                <rect x="1" y="1" height="595" width="900" rx="10" ry="10" stroke="black" stroke-width="2" fill="none"></rect>
-            </svg>
-            <svg id="summary" width="38%" height="600" style="float: right">
-                <text class="author" x="80" y="20">Run Li | Yulong Liang | Zhi Wang</text>
-                <text class="airportsummary" x="0" y="70">Airport Summary</text>
-                <text class="summaryitem" x="0" y="100">Name: </text>
-                <text class="summaryitem" x="0" y="130">IATA Code: </text>
-                <text class="summaryitem" x="0" y="160">Type: </text>
-                <text class="summaryitem" x="0" y="190"># of Flight: </text>
-                <text class="summaryitem" x="0" y="220">Average Delay: </text>
-
-            </svg>
-        </div>
-
+    <div id="cause" class="view">
+        <svg id="summary" width="38%" height="600" style="float: right"></svg>
+    </div>
 
     <script src="js/script.js"></script>
     <script src="js/usmap.js"></script>

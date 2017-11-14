@@ -1,22 +1,12 @@
 .div-container {
     width: 85%;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding: 15px;
     margin-right: auto;
     margin-left: auto;
 }
 
 .card2 {
     width: 100%;
-    margin-top: 10%;
-    margin-bottom: 10%;
-}
-
-.airportsummary{
-    font-family: "AR DARLING";
-    font-size: 40px;
-    text-anchor: start;
-    fill: purple;
 }
 
 .arc text {
