@@ -6,15 +6,23 @@ class Usmap{
         for(let i = 0; i < airports.length; i++)
             this.airportsmap[airports[i].iata_code] = airports[i];
         console.log(this.airportsmap);
-        this.mapWidth = 1366;
-        this.mapHeight = 768;
+
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.mapWidth = 1600;
+        this.mapHeight = 1000;
 
         this.projection = d3.geo.albersUsa()
-            .translate([this.mapWidth/2, this.mapHeight/2])
-            .scale([1500]);
+            .translate([this.mapWidth / 2, this.mapHeight / 2])
+            .scale([this.mapWidth * 1.38]);
     }
 
     makeMap1(){
+
+        //Set map to be responsive
+        d3.select("#usmap")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", this.offsetX+" "+this.offsetY+" "+this.mapWidth+" "+this.mapHeight)
 
         d3.select("#usmap").selectAll("g").remove();
 
@@ -38,6 +46,7 @@ class Usmap{
         let airports = this.airports;
         let airportsmap = this.airportsmap;
         let projection = this.projection;
+        let updateCard = this.updateCard;
         d3.select("#usmap").select("#spots").remove();
         d3.select("#usmap").selectAll("line").remove();
 
@@ -107,13 +116,14 @@ class Usmap{
         //     .attr("id", "hour");
 
         spots.on("click", function(d){
-            g2.selectAll("text").remove();
-            g2.selectAll("line").remove();
-            let names = g2.append("text")
-                .text(function(){return d.name;})
-                .attr("x", 20)
-                .attr("y", 30)
-                .attr("class","airportname");
+            // g2.selectAll("text").remove();
+            // g2.selectAll("line").remove();
+            // let names = g2.append("text")
+            //     .text(function(){return d.name;})
+            //     .attr("x", 20)
+            //     .attr("y", 30)
+            //     .attr("class","airportname");
+            updateCard(d);
 
             d3.csv("dataset/airportconnection.csv", function(connections){
                 let airportconnection = connections.filter(function(c){
@@ -191,6 +201,24 @@ class Usmap{
 
 
 
+    }
+
+    updateCard(d) {
+        console.log(d)
+        let card = d3.select("#paneldiv")
+            .attr("style", "opacity: 1")
+        let title = d3.select("#card_title")
+            .text(d.name)
+        let enplanement = d3.select("#card_enplanement")
+            .text("Enplanement: "+"no data")
+        let dep_delay = d3.select("#card_dep_delay")
+            .text("Departure Delay: "+"no data")
+        let arr_delay = d3.select("#card_arr_delay")
+            .text("Arriving Delay: "+"no data")
+        let latitude = d3.select("#card_latitude")
+            .text("Latitude: "+d.lat)
+        let longitude = d3.select("#card_longitude")
+            .text("Longitude: "+d.lon)
     }
 
     // updateTop10(){

@@ -1,17 +1,23 @@
-.airportname{
-    fill: darkcyan;
-    font-family: "AR BLANCA";
-    font-size: 40px;
-    text-anchor: start;
-
+.div-container {
+    width: 85%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
+.card2 {
+    width: 100%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
 
 .bar1{
     fill: red;
     stroke: gray;
     stroke-width: 1px;
 }
+
 button{
     border-radius: 50%;
     text-align: center;
@@ -25,12 +31,12 @@ body {
 
 .clicked{}
 
-h1 {
-    font-size:35px;
-    margin: 0px;
-    padding: 0px;
-    margin-left: 20px;
-}
+/*h1 {*/
+    /*font-size:35px;*/
+    /*margin: 0px;*/
+    /*padding: 0px;*/
+    /*margin-left: 20px;*/
+/*}*/
 
 .hovered{}
 
