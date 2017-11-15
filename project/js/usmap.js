@@ -12,7 +12,7 @@ class Usmap{
         this.mapWidth = 1600;
         this.mapHeight = 1000;
 
-        this.projection = d3.geo.albersUsa()
+        this.projection = d3.geoAlbersUsa()
             .translate([this.mapWidth / 2, this.mapHeight / 2])
             .scale([this.mapWidth * 1.36]);
     }
@@ -26,14 +26,14 @@ class Usmap{
 
         d3.select("#usmap").selectAll("g").remove();
 
-        let path = d3.geo.path()
+        let path = d3.geoPath()
             .projection(this.projection);
 
-        let g1 = d3.select("#usmap").append("g")
+        let mapgroup = d3.select("#usmap").append("g")
             .attr("id", "path");
 
         d3.json("dataset/us-states.json", function(json) {
-            g1.selectAll("path")
+            mapgroup.selectAll("path")
                 .data(json.features)
                 .enter()
                 .append("path")
@@ -43,6 +43,7 @@ class Usmap{
     }
 
     update1() {
+
         let airports = this.airports;
         let airportsmap = {};
 
@@ -52,7 +53,7 @@ class Usmap{
 
         d3.select("#usmap").select("#spots").remove();
         d3.select("#usmap").selectAll("line").remove();
-        d3.select("#summary").selectAll(".summaryvalue").remove();
+        // d3.select("#summary").selectAll(".summaryvalue").remove();
 
         for (let i = 0; i < airports.length; i++) {
             if (projection([airports[i].lon, airports[i].lat]) == null) {
@@ -65,8 +66,8 @@ class Usmap{
         }
         let g2 = d3.select("#usmap").append("g")
             .attr("id", "spots");
-
-        let spots = g2.selectAll("circle").data(airports);
+        let spots = g2.selectAll("circle")
+            .data(airports);
         spots.enter().append("circle")
             .attr("cx", function (d) {
                 return projection([d.lon, d.lat])[0];
@@ -80,10 +81,8 @@ class Usmap{
                 else if (d.type == "large_airport") return 8;
                 else return 0;
             })
-            .attr("class", "spot");
-
-        spots.on("click", function (d) {
-
+            .attr("class", "spot")
+            .on("click", function (d) {
             g2.selectAll("text").remove();
             g2.selectAll("line").remove();
             d3.selectAll(".summaryvalue").remove();
@@ -207,15 +206,15 @@ class Usmap{
                         parseFloat(data["November.FlightCount"]),
                         parseFloat(data["December.FlightCount"])];
 
-                    let flightDataScale = d3.scale.linear()
+                    let flightDataScale = d3.scaleLinear()
                         .domain([0, d3.max(flightdata) * 1.2])
                         .range([0, 200]);
 
-                    let yScale1 = d3.scale.linear()
+                    let yScale1 = d3.scaleLinear()
                         .domain([d3.max(flightdata) * 1.2, 0])
                         .range([0, 200]);
 
-                    var bar1y = d3.svg.axis().scale(yScale1).orient("left");
+                    var bar1y = d3.axisLeft().scale(yScale1);
                     d3.select("#y1").attr("transform", "translate(100,10)")
                         .transition().duration(3000)
                         .attr("class", "yaxis").call(bar1y);
@@ -250,14 +249,14 @@ class Usmap{
                         data["November.DepDly"] / data["November.FlightCount"],
                         data["December.DepDly"] / data["December.FlightCount"]];
 
-                    let depScale = d3.scale.linear()
+                    let depScale = d3.scaleLinear()
                         .domain([0, d3.max(depdata) * 1.2])
                         .range([0, 200]);
-                    let yScale2 = d3.scale.linear()
+                    let yScale2 = d3.scaleLinear()
                         .domain([d3.max(depdata) * 1.2, 0])
                         .range([0, 200]);
 
-                    var bar2y = d3.svg.axis().scale(yScale2).orient("left");
+                    var bar2y = d3.axisLeft().scale(yScale2);
                     d3.select("#y2").attr("transform", "translate(500,10)")
                         .transition().duration(3000)
                         .attr("class", "yaxis").call(bar2y);
@@ -292,14 +291,14 @@ class Usmap{
                         data["November.ArrDly"] / data["November.FlightCount"],
                         data["December.ArrDly"] / data["December.FlightCount"]];
 
-                    let arrScale = d3.scale.linear()
+                    let arrScale = d3.scaleLinear()
                         .domain([0, d3.max(arrdata) * 1.2])
                         .range([0, 200]);
-                    let yScale3 = d3.scale.linear()
+                    let yScale3 = d3.scaleLinear()
                         .domain([d3.max(arrdata) * 1.2, 0])
                         .range([0, 200]);
 
-                    var bar3y = d3.svg.axis().scale(yScale3).orient("left");
+                    var bar3y = d3.axisLeft().scale(yScale3);
                     d3.select("#y3").attr("transform", "translate(900,10)")
                         .transition().duration(3000)
                         .attr("class", "yaxis").call(bar3y);
@@ -340,15 +339,15 @@ class Usmap{
                         parseFloat(data["Saturday.FlightCount"]),
                         parseFloat(data["Sunday.FlightCount"])];
 
-                    let flightDataScale = d3.scale.linear()
+                    let flightDataScale = d3.scaleLinear()
                         .domain([0, d3.max(flightdata) * 1.2])
                         .range([0, 200]);
 
-                    let yScale4 = d3.scale.linear()
+                    let yScale4 = d3.scaleLinear()
                         .domain([d3.max(flightdata) * 1.2, 0])
                         .range([0, 200]);
 
-                    var bar4y = d3.svg.axis().scale(yScale4).orient("left");
+                    var bar4y = d3.axisLeft().scale(yScale4);
                     d3.select("#y4").attr("transform", "translate(100,10)")
                         .transition().duration(3000)
                         .attr("class", "yaxis").call(bar4y);
@@ -378,14 +377,14 @@ class Usmap{
                         data["Saturday.DepDly"] / data["Saturday.FlightCount"],
                         data["Sunday.DepDly"] / data["Sunday.FlightCount"]];
 
-                    let depScale = d3.scale.linear()
+                    let depScale = d3.scaleLinear()
                         .domain([0, d3.max(depdata) * 1.2])
                         .range([0, 200]);
-                    let yScale5 = d3.scale.linear()
+                    let yScale5 = d3.scaleLinear()
                         .domain([d3.max(depdata) * 1.2, 0])
                         .range([0, 200]);
 
-                    var bar5y = d3.svg.axis().scale(yScale5).orient("left");
+                    var bar5y = d3.axisLeft().scale(yScale5);
                     d3.select("#y5").attr("transform", "translate(500,10)")
                         .transition().duration(3000)
                         .attr("class", "yaxis").call(bar5y);
@@ -415,14 +414,14 @@ class Usmap{
                         data["Saturday.ArrDly"] / data["Saturday.FlightCount"],
                         data["Sunday.ArrDly"] / data["Sunday.FlightCount"]];
 
-                    let arrScale = d3.scale.linear()
+                    let arrScale = d3.scaleLinear()
                         .domain([0, d3.max(arrdata) * 1.2])
                         .range([0, 200]);
-                    let yScale6 = d3.scale.linear()
+                    let yScale6 = d3.scaleLinear()
                         .domain([d3.max(arrdata) * 1.2, 0])
                         .range([0, 200]);
 
-                    var bar6y = d3.svg.axis().scale(yScale6).orient("left");
+                    var bar6y = d3.axisLeft().scale(yScale6);
                     d3.select("#y6").attr("transform", "translate(900,10)")
                         .transition().duration(3000)
                         .attr("class", "yaxis").call(bar6y);
@@ -476,14 +475,14 @@ class Usmap{
                         parseFloat(data["22.FlightCount"]),
                         parseFloat(data["23.FlightCount"])];
 
-                    let flightDataScale = d3.scale.linear()
+                    let flightDataScale = d3.scaleLinear()
                         .domain([0, d3.max(flightdata) * 1.2])
                         .range([0, 200]);
-                    let yScale7 = d3.scale.linear()
+                    let yScale7 = d3.scaleLinear()
                         .domain([d3.max(flightdata) * 1.2, 0])
                         .range([0, 200]);
 
-                    var bar7y = d3.svg.axis().scale(yScale7).orient("left");
+                    var bar7y = d3.axisLeft().scale(yScale7);
                     d3.select("#y7").attr("transform", "translate(100,10)")
                         .transition().duration(3000)
                         .attr("class", "yaxis").call(bar7y);
@@ -525,14 +524,14 @@ class Usmap{
                         parseFloat(data["22.DepDly"]/data["00.FlightCount"]),
                         parseFloat(data["23.DepDly"]/data["00.FlightCount"])];
 
-                    let depScale = d3.scale.linear()
+                    let depScale = d3.scaleLinear()
                         .domain([0, d3.max(depdata) * 1.2])
                         .range([0, 200]);
-                    let yScale8 = d3.scale.linear()
+                    let yScale8 = d3.scaleLinear()
                         .domain([d3.max(depdata) * 1.2, 0])
                         .range([0, 200]);
 
-                    var bar8y = d3.svg.axis().scale(yScale8).orient("left");
+                    var bar8y = d3.axisLeft().scale(yScale8);
                     d3.select("#y8").attr("transform", "translate(500,10)")
                         .transition().duration(3000)
                         .attr("class", "yaxis").call(bar8y);
@@ -574,14 +573,14 @@ class Usmap{
                         parseFloat(data["22.ArrDly"]/data["00.FlightCount"]),
                         parseFloat(data["23.ArrDly"]/data["00.FlightCount"])];
 
-                    let arrScale = d3.scale.linear()
+                    let arrScale = d3.scaleLinear()
                         .domain([0, d3.max(arrdata) * 1.2])
                         .range([0, 200]);
-                    let yScale9 = d3.scale.linear()
+                    let yScale9 = d3.scaleLinear()
                         .domain([d3.max(arrdata) * 1.2, 0])
                         .range([0, 200]);
 
-                    var bar9y = d3.svg.axis().scale(yScale9).orient("left");
+                    var bar9y = d3.axisLeft().scale(yScale9);
                     d3.select("#y9").attr("transform", "translate(900,10)")
                         .transition().duration(3000)
                         .attr("class", "yaxis").call(bar9y);
@@ -675,23 +674,25 @@ class Usmap{
                 ];
             }
 
-            let radius = 150;
+            //Set piechart to be responsive
+            let piechart = d3.select("#piechart")
+                .attr("preserveAspectRatio", "xMinYMin meet")
+                .attr("viewBox", "0, 0, 100, 100")
 
-            let svg = d3.select("#summary")
-                .append("g")
-                .attr("transform", "translate(270,400)");
+            let piechartgroup = piechart.append("g");
+                // .attr("transform", "translate(270,400)");
 
-            let arc = d3.svg.arc()
-                .outerRadius(radius)
+            let arc = d3.arc()
+                .outerRadius(40)
                 .innerRadius(30);
 
-            let pie = d3.layout.pie()
+            let pie = d3.pie()
                 .sort(null)
                 .value(function (x) {
                     return x.value;
                 });
 
-            let g = svg.selectAll(".arc")
+            let g = piechartgroup.selectAll(".arc")
                 .data(pie(dataset))
                 .enter()
                 .append("g")

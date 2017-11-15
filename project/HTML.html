@@ -4,13 +4,12 @@
     <meta charset = "utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>cs6630 project</title>
-    <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-
+    <link rel="stylesheet" href="css/styles.css"/>
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" -->
     <!--integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">-->
-    <!--<script src="https://d3js.org/d3.v4.js"></script>-->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <!--<script src="http://d3js.org/d3.v3.min.js"></script>-->
 </head>
 
 <body>
@@ -22,19 +21,22 @@
         <div id="mapdiv" class="col-xl-9">
             <svg id="usmap"></svg>
         </div>
-        <div id="paneldiv" class="col-xl-3 card2">
+        <div id="paneldiv" class="col-xl-3">
             <div id="carddiv" style="opacity: 0;">
-                <div class="card-body">
+                <div class="card-body reducedpadding">
                     <h4 id="card_title" class="card-title"></h4>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li id="card_iata" class="list-group-item"></li>
-                    <li id="card_type" class="list-group-item"></li>
-                    <li id="card_count" class="list-group-item"></li>
-                    <li id="card_delay" class="list-group-item"></li>
-                    <li id="card_latitude" class="list-group-item"></li>
-                    <li id="card_longitude" class="list-group-item"></li>
+                    <li id="card_iata" class="list-group-item reducedpadding"></li>
+                    <li id="card_type" class="list-group-item reducedpadding"></li>
+                    <li id="card_count" class="list-group-item reducedpadding"></li>
+                    <li id="card_delay" class="list-group-item reducedpadding"></li>
+                    <li id="card_latitude" class="list-group-item reducedpadding"></li>
+                    <li id="card_longitude" class="list-group-item reducedpadding"></li>
                 </ul>
+                <div id="piediv">
+                    <svg id="piechart"></svg>
+                </div>
             </div>
         </div>
     </div>
@@ -69,9 +71,7 @@
             <g id="y9"></g>
         </svg>
     </div>
-    <div id="cause" class="view">
-        <svg id="summary" width="38%" height="600" style="float: right"></svg>
-    </div>
+
 
     <script src="js/script.js"></script>
     <script src="js/usmap.js"></script>
