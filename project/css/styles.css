@@ -9,13 +9,10 @@
     padding: 0.5rem;
 }
 
-.arc text {
-    font: 12px sans-serif;
+.pietext {
+    font-family: sans-serif;
+    font-size: 0.55rem;
     text-anchor: middle;
-}
-
-.arc path {
-    stroke: #fff;
 }
 
 .author{
