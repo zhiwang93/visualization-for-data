@@ -3,9 +3,9 @@ class Usmap{
     constructor(airports){
         this.airports = airports;
         this.airportsmap = {};
-        for(let i = 0; i < airports.length; i++)
-            this.airportsmap[airports[i].iata_code] = airports[i];
-        console.log(this.airportsmap);
+        // for(let i = 0; i < airports.length; i++)
+        //     this.airportsmap[airports[i].iata_code] = airports[i];
+        // console.log(this.airportsmap);
 
         this.offsetX = 0;
         this.offsetY = 10;
@@ -15,58 +15,81 @@ class Usmap{
         this.projection = d3.geoAlbersUsa()
             .translate([this.mapWidth / 2, this.mapHeight / 2])
             .scale([this.mapWidth * 1.36]);
+
+        for (let i = 0; i < this.airports.length; i++) {
+            if (this.projection([this.airports[i].lon, this.airports[i].lat]) == null) {
+                this.airports.splice(i, 1);
+                i--;
+            }
+            else {
+                this.airportsmap[this.airports[i].iata_code] = this.projection([this.airports[i].lon, this.airports[i].lat]);
+            }
+        }
     }
 
     makeMap1(){
+        //remove all the elements first
+        d3.select("#usmap").selectAll("g").remove();
 
         //Set map to be responsive
-        d3.select("#usmap")
+        let usmap = d3.select("#usmap")
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox", this.offsetX+" "+this.offsetY+" "+this.mapWidth+" "+this.mapHeight)
 
-        d3.select("#usmap").selectAll("g").remove();
-
+        //draw map
         let path = d3.geoPath()
             .projection(this.projection);
 
-        let mapgroup = d3.select("#usmap").append("g")
+        let pathgroup = usmap.append("g")
             .attr("id", "path");
 
         d3.json("dataset/us-states.json", function(json) {
-            mapgroup.selectAll("path")
+            pathgroup.selectAll("path")
                 .data(json.features)
                 .enter()
                 .append("path")
                 .attr("d", path)
                 .attr("class", "mappath");
         });
+
+        //draw legend
+        let linearSize = d3.scaleOrdinal()
+            .domain(["Small Airport", "Midium Airport", "Large Airport"])
+            .range([2, 5, 15]);
+
+        let legendgroup = usmap.append("g")
+            .attr("id", "maplegend")
+            .attr("transform", "translate("+ this.mapWidth * 0.89+","+ this.mapHeight * 0.89 +")");
+
+        let legendSize = d3.legendSize()
+            .scale(linearSize)
+            .shape('circle')
+            .shapePadding(20)
+            .labelOffset(10)
+            .orient('vertical');
+
+        legendgroup.call(legendSize);
     }
 
     update1() {
 
         let airports = this.airports;
-        let airportsmap = {};
-
+        let airportsmap = this.airportsmap;
         let projection = this.projection;
+
+        let updateSpots = this.updateSpots;
+        let updateLine = this.updateLine;
         let updateCard = this.updateCard;
         let updatePie = this.updatePie;
 
-        d3.select("#usmap").select("#spots").remove();
-        d3.select("#usmap").selectAll("line").remove();
-        // d3.select("#summary").selectAll(".summaryvalue").remove();
+        //remove all the elements first
+        d3.select("#usmap").selectAll("#spots").remove();
+        d3.select("#usmap").selectAll("#routes").remove();
 
-        for (let i = 0; i < airports.length; i++) {
-            if (projection([airports[i].lon, airports[i].lat]) == null) {
-                airports.splice(i, 1);
-                i--;
-            }
-            else {
-                airportsmap[airports[i].iata_code] = projection([airports[i].lon, airports[i].lat]);
-            }
-        }
-        let g2 = d3.select("#usmap").append("g")
+        //draw spots
+        let spotsGroup = d3.select("#usmap").append("g")
             .attr("id", "spots");
-        let spots = g2.selectAll("circle")
+        let spots = spotsGroup.selectAll("circle")
             .data(airports);
         spots.enter().append("circle")
             .attr("cx", function (d) {
@@ -76,44 +99,18 @@ class Usmap{
                 return projection([d.lon, d.lat])[1];
             })
             .attr("r", function (d) {
-                if (d.type == "small_airport") return 1;
-                else if (d.type == "medium_airport") return 4;
-                else if (d.type == "large_airport") return 8;
+                if (d.type == "small_airport") return 2;
+                else if (d.type == "medium_airport") return 5;
+                else if (d.type == "large_airport") return 15;
                 else return 0;
             })
             .attr("class", "spot")
             .on("click", function (d) {
-                g2.selectAll("text").remove();
-                g2.selectAll("line").remove();
-                // d3.selectAll(".summaryvalue").remove();
-                // d3.selectAll(".arc").remove();
 
+                updateSpots(d3.select(this));
+                updateLine(d, projection, airportsmap);
                 updateCard(d);
                 updatePie(d);
-
-                d3.csv("dataset/airportconnection.csv", function (connections) {
-                    let airportconnection = connections.filter(function (c) {
-                        return c.ORIGIN == d.iata_code;
-                    });
-
-                    let routes = g2.selectAll("line").data(airportconnection);
-                    routes.enter().append("line")
-                        .attr("x1", function () {
-                            return projection([d.lon, d.lat])[0];
-                        })
-                        .attr("y1", function () {
-                            return projection([d.lon, d.lat])[1];
-                        })
-                        .attr("x2", function (a) {
-                            var dest = airportsmap[a.DEST];
-                            return dest == null ? projection([d.lon, d.lat])[0] : dest[0];
-                        })
-                        .attr("y2", function (a) {
-                            var dest = airportsmap[a.DEST];
-                            return dest == null ? projection([d.lon, d.lat])[1] : dest[1];
-                        })
-                        .attr("class", "route");
-                });
 
                 d3.csv("dataset/ByMonth.csv", function (ByMonth) {
                     let data = null;
@@ -538,9 +535,50 @@ class Usmap{
             });
     }
 
+    updateSpots(x) {
+        //remove class for all the spots
+        d3.select("#spots").selectAll("circle")
+            .attr("class", "spot");
+
+        //set class for the selected spots
+        x.attr("class", "clicked");
+    }
+    updateLine(d, projection, airportsmap) {
+
+        d3.select("#routes").remove();
+
+        let routesGroup = d3.select("#usmap").append("g")
+            .attr("id", "routes");
+
+        d3.csv("dataset/airportconnection.csv", function (connections) {
+            let airportconnection = connections.filter(function (c) {
+                return c.ORIGIN == d.iata_code;
+            });
+
+            let routes = routesGroup.selectAll("line")
+                .data(airportconnection);
+            routes.enter().append("line")
+                .attr("x1", function () {
+                    return projection([d.lon, d.lat])[0];
+                })
+                .attr("y1", function () {
+                    return projection([d.lon, d.lat])[1];
+                })
+                .attr("x2", function (a) {
+                    var dest = airportsmap[a.DEST];
+                    return dest == null ? projection([d.lon, d.lat])[0] : dest[0];
+                })
+                .attr("y2", function (a) {
+                    var dest = airportsmap[a.DEST];
+                    return dest == null ? projection([d.lon, d.lat])[1] : dest[1];
+                })
+                .attr("class", "route");
+        });
+    }
+
     updateCard(d) {
-        let card = d3.select("#carddiv")
-            .attr("style", "opacity: 1")
+        let card = d3.select("#paneldiv")
+            .attr("class", "col-xl-3 card panelafter")
         let title = d3.select("#card_title")
             .text(d.name)
         let iata = d3.select("#card_iata")
@@ -576,9 +614,13 @@ class Usmap{
     }
 
     updatePie(d) {
+
+        //remove all the elements first
         d3.select("#piechart").selectAll("g").remove();
 
+        //fetch the corresponding data from Summary.csv regarding the iata_code
         d3.csv("dataset/Summary.csv", function (summary) {
+
             let data = null;
             for (let i = 0; i < summary.length; i++) {
                 if (d.iata_code == summary[i].Origin) {
@@ -598,24 +640,26 @@ class Usmap{
                 {legend: "Late Aircraft Delay", value: data["PercentLateAircraftDly"]}
             ];
 
+            //define width, height and color scale
             let width = document.getElementById("piediv").offsetWidth + 30;
             let height = document.getElementById("paneldiv").offsetHeight - document.getElementById("carddiv").offsetHeight;
-            let color = d3.scaleOrdinal(d3.schemeCategory10);
+            let colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+                .domain(Array.from(dataset, function (d) {
+                    return d.legend
+                }));
 
             //Set piechart to be responsive
             let piechart = d3.select("#piechart")
                 .attr("preserveAspectRatio", "xMinYMin meet")
-                .attr("viewBox","0 0 "+width+" "+height)
-                .append("g")
-                .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+                .attr("viewBox","0 0 "+width+" "+height);
+
+            //draw pie chart
+            let chartgroup = piechart.append("g")
+                .attr("transform", "translate(" + width/4 + "," + height/2 + ")");
 
             let arc = d3.arc()
                 .outerRadius(80)
                 .innerRadius(50);
-
-            let arc2 = d3.arc()
-                .outerRadius(90)
-                .innerRadius(90)
 
             let pie = d3.pie()
                 .sort(null)
@@ -623,7 +667,7 @@ class Usmap{
                     return d.value;
                 });
 
-            let groups = piechart.selectAll("g")
+            let groups = chartgroup.selectAll("g")
                 .data(pie(dataset))
                 .enter()
                 .append("g");
@@ -631,31 +675,47 @@ class Usmap{
             groups.append("path")
                 .attr("d", arc)
                 .attr("stroke", "#FFFFFF")
-                .attr("fill", function (d, i) {
-                    return color(i);
+                .attr("fill", function (d) {
+                    return colorScale(d.data.legend);
                 });
 
-            function midAngle(d) {
-                return d.startAngle + (d.endAngle - d.startAngle) / 2;
-            }
+            //draw legend
+            let legendgroup = piechart.append("g")
+                .attr("transform", "translate(" + (width/2 + 20) + ", 80)");
 
-            groups.append("text")
-                .text(function(d) {
-                    return d.data.legend;
-                    // return parseFloat(d.data.value * 100).toFixed(2) + "%";
-                })
-                .attr("transform", function(d) {
-                    let pos = arc2.centroid(d);
-                    return "translate(" + pos + ")";
-                })
-                .style("text-anchor", function(d) {
-                    return (midAngle(d)) < Math.PI ? "start" : "end";
-                })
-                .attr("class", "pietext")
+            let legendOrdinal = d3.legendColor()
+                .shape("path", d3.symbol().type(d3.symbolSquare).size(100)())
+                .shapePadding(7)
+                .scale(colorScale);
+
+            legendgroup.call(legendOrdinal);
+
+            // // add label to pie chart
+            // let arc2 = d3.arc()
+            //     .outerRadius(90)
+            //     .innerRadius(90)
+            //
+            // function midAngle(d) {
+            //     return d.startAngle + (d.endAngle - d.startAngle) / 2;
+            // }
+            //
+            // groups.append("text")
+            //     .text(function(d) {
+            //         return d.data.legend;
+            //         // return parseFloat(d.data.value * 100).toFixed(2) + "%";
+            //     })
+            //     .attr("transform", function(d) {
+            //         let pos = arc2.centroid(d);
+            //         return "translate(" + pos + ")";
+            //     })
+            //     .style("text-anchor", function(d) {
+            //         return (midAngle(d)) < Math.PI ? "start" : "end";
+            //     })
+            //     .attr("class", "pietext")
         });
     }
 
-    // updateTop10(){
+    updateTop10(){
     //     let airports = this.airports.slice(0, 10);
     //     d3.select("#top10").select("svg").remove();
     //
@@ -670,6 +730,5 @@ class Usmap{
     //         .attr("y", function(d, i){return i*20;})
     //         .attr("height", 20)
     //         .attr("width", function(d){return })
-    //
-    // }
+    }
 }

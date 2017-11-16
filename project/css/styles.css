@@ -1,14 +1,83 @@
+/*layout styles*/
+
 .div-container {
-    width: 85%;
+    width: 90%;
     padding: 15px;
     margin-right: auto;
     margin-left: auto;
+}
+
+/*map styles*/
+
+.mappath{
+    stroke: #444444;
+    stroke-width: 0.1rem;
+    fill: #DDDDDD;
+    opacity: 0.2;
+}
+
+.route{
+    stroke: Orange;
+    stroke-width: 2;
+    opacity: 0.5;
+}
+
+.spot{
+    fill: green;
+    opacity: 0.5;
+}
+
+.spot:hover {
+    fill: green;
+    opacity: 1;
+    stroke-width: 1px;
+    stroke: black;
+}
+
+.clicked {
+    fill: green;
+    opacity: 1;
+    stroke-width: 1px;
+    stroke: black;
+}
+
+#maplegend .label {
+    font-size: 1.5rem;
+}
+
+#maplegend .swatch {
+    fill: green;
+}
+
+/*panel styles*/
+
+.panelbefore {
+    opacity: 0;
+}
+
+.panelafter {
+    opacity: 1;
+}
+
+.pie {
+    margin: -15px;
+    max-width: 400px;
 }
 
 .reducedpadding {
     padding: 0.5rem;
 }
 
+.nopadding {
+    padding: 0;
+}
+
+.maxwidth {
+    max-width: 50%;
+}
+
+/*unused styles*/
+/*************************************************/
 .pietext {
     font-family: sans-serif;
     font-size: 0.55rem;
@@ -21,6 +90,18 @@
     text-anchor: start;
     fill: red;
 }
+
+nobody {
+    font-family: Lato;
+}
+
+nobutton{
+    border-radius: 50%;
+    text-align: center;
+    background-color: darkcyan;
+    color: white;
+}
+/*************************************************/
 
 .xaxis path,
 .xaxis line {
@@ -49,63 +130,4 @@
     fill: LightBlue;
     stroke: gray;
     stroke-width: 1px;
-}
-
-button{
-    border-radius: 50%;
-    text-align: center;
-    background-color: darkcyan;
-    color: white;
-}
-
-body {
-    font-family: Lato;
-}
-
-.clicked{}
-
-/*h1 {*/
-    /*font-size:35px;*/
-    /*margin: 0px;*/
-    /*padding: 0px;*/
-    /*margin-left: 20px;*/
-/*}*/
-
-.hovered{}
-
-.info{
-    margin-left: 20px;
-}
-
-.mappath{
-    stroke: #fff;
-    stroke-width: 1;
-    fill: steelBlue;
-    opacity: 0.2;
-}
-
-.route{
-    stroke: green;
-    stroke-width: 2;
-    opacity: 0.3;
-}
-
-.spot{
-    stroke-width: 1px;
-    stroke: black;
-    fill: green;
-}
-
-.summaryitem{
-    font-family: "AR DARLING";
-    font-size: 25px;
-    text-anchor: start;
-    fill: blue;
-}
-
-.summaryvalue{
-    font-family: "Algerian";
-    font-size: 18px;
-    text-anchor: start;
-    fill: brown;
 }
