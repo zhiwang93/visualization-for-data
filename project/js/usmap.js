@@ -3,14 +3,11 @@ class Usmap{
     constructor(airports){
         this.airports = airports;
         this.airportsmap = {};
-        // for(let i = 0; i < airports.length; i++)
-        //     this.airportsmap[airports[i].iata_code] = airports[i];
-        // console.log(this.airportsmap);
 
         this.offsetX = 0;
-        this.offsetY = 10;
+        this.offsetY = 0;
         this.mapWidth = 1600;
-        this.mapHeight = 1000;
+        this.mapHeight = 1050;
 
         this.projection = d3.geoAlbersUsa()
             .translate([this.mapWidth / 2, this.mapHeight / 2])
@@ -28,6 +25,10 @@ class Usmap{
     }
 
     makeMap1(){
+
+        let airports = this.airports;
+        let projection = this.projection;
+
         //remove all the elements first
         d3.select("#usmap").selectAll("g").remove();
 
@@ -38,7 +39,7 @@ class Usmap{
 
         //draw map
         let path = d3.geoPath()
-            .projection(this.projection);
+            .projection(projection);
 
         let pathgroup = usmap.append("g")
             .attr("id", "path");
@@ -52,6 +53,26 @@ class Usmap{
                 .attr("class", "mappath");
         });
 
+        //draw spots
+        let spotsGroup = usmap.append("g")
+            .attr("id", "spots");
+        let spots = spotsGroup.selectAll("circle")
+            .data(airports);
+        spots.enter().append("circle")
+            .attr("cx", function (d) {
+                return projection([d.lon, d.lat])[0];
+            })
+            .attr("cy", function (d) {
+                return projection([d.lon, d.lat])[1];
+            })
+            .attr("r", function (d) {
+                if (d.type == "small_airport") return 2;
+                else if (d.type == "medium_airport") return 5;
+                else if (d.type == "large_airport") return 15;
+                else return 0;
+            })
+            .attr("class", "spot")
+
         //draw legend
         let linearSize = d3.scaleOrdinal()
             .domain(["Small Airport", "Midium Airport", "Large Airport"])
@@ -59,7 +80,7 @@ class Usmap{
 
         let legendgroup = usmap.append("g")
             .attr("id", "maplegend")
-            .attr("transform", "translate("+ this.mapWidth * 0.89+","+ this.mapHeight * 0.89 +")");
+            .attr("transform", "translate("+ this.mapWidth * 0.87+","+ this.mapHeight * 0.7 +")");
 
         let legendSize = d3.legendSize()
             .scale(linearSize)
@@ -82,29 +103,8 @@ class Usmap{
         let updateCard = this.updateCard;
         let updatePie = this.updatePie;
 
-        //remove all the elements first
-        d3.select("#usmap").selectAll("#spots").remove();
-        d3.select("#usmap").selectAll("#routes").remove();
-
-        //draw spots
-        let spotsGroup = d3.select("#usmap").append("g")
-            .attr("id", "spots");
-        let spots = spotsGroup.selectAll("circle")
-            .data(airports);
-        spots.enter().append("circle")
-            .attr("cx", function (d) {
-                return projection([d.lon, d.lat])[0];
-            })
-            .attr("cy", function (d) {
-                return projection([d.lon, d.lat])[1];
-            })
-            .attr("r", function (d) {
-                if (d.type == "small_airport") return 2;
-                else if (d.type == "medium_airport") return 5;
-                else if (d.type == "large_airport") return 15;
-                else return 0;
-            })
-            .attr("class", "spot")
+        //set actions after click
+        d3.select("#spots").selectAll("circle")
             .on("click", function (d) {
 
                 updateSpots(d3.select(this));
@@ -641,8 +641,12 @@ class Usmap{
             ];
 
             //define width, height and color scale
-            let width = document.getElementById("piediv").offsetWidth + 30;
-            let height = document.getElementById("paneldiv").offsetHeight - document.getElementById("carddiv").offsetHeight;
+            // let width = document.getElementById("piediv").offsetWidth + 30;
+            // let height = document.getElementById("paneldiv").offsetHeight - document.getElementById("carddiv").offsetHeight;
+
+            let width = 400;
+            let height = 240;
+
             let colorScale = d3.scaleOrdinal(d3.schemeCategory10)
                 .domain(Array.from(dataset, function (d) {
                     return d.legend
@@ -655,11 +659,11 @@ class Usmap{
 
             //draw pie chart
             let chartgroup = piechart.append("g")
-                .attr("transform", "translate(" + width/4 + "," + height/2 + ")");
+                .attr("transform", "translate(100, 120)");
 
             let arc = d3.arc()
                 .outerRadius(80)
-                .innerRadius(50);
+                .innerRadius(60);
 
             let pie = d3.pie()
                 .sort(null)
@@ -681,7 +685,7 @@ class Usmap{
 
             //draw legend
             let legendgroup = piechart.append("g")
-                .attr("transform", "translate(" + (width/2 + 20) + ", 80)");
+                .attr("transform", "translate(220, 70)");
 
             let legendOrdinal = d3.legendColor()
                 .shape("path", d3.symbol().type(d3.symbolSquare).size(100)())

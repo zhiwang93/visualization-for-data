@@ -57,11 +57,13 @@
 
 .panelafter {
     opacity: 1;
+    padding: 15px;
+    max-width: 400px;
+    /*min-height: 550px;*/
 }
 
 .pie {
     margin: -15px;
-    max-width: 400px;
 }
 
 .reducedpadding {
@@ -70,10 +72,6 @@
 
 .nopadding {
     padding: 0;
-}
-
-.maxwidth {
-    max-width: 50%;
 }
 
 /*unused styles*/
