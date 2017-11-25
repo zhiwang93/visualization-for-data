@@ -23,14 +23,22 @@
             <div id="carddiv">
                 <div class="card-body reducedpadding">
                     <h4 id="card_title" class="card-title"></h4>
+                    <h6 id="card_code" class="card-title"></h6>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li id="card_iata" class="list-group-item reducedpadding"></li>
-                    <li id="card_type" class="list-group-item reducedpadding"></li>
-                    <li id="card_count" class="list-group-item reducedpadding"></li>
-                    <li id="card_delay" class="list-group-item reducedpadding"></li>
-                    <li id="card_latitude" class="list-group-item reducedpadding"></li>
-                    <li id="card_longitude" class="list-group-item reducedpadding"></li>
+                <ul id="cardlist" class="list-group list-group-flush reducefontsize">
+                    <li class="list-group-item reducedpadding">
+                        <span class="font-weight-bold">Manicipality: </span><span id="card_municipality"></span>
+                    </li>
+                    <li class="list-group-item reducedpadding">
+                        <span class="font-weight-bold">Coordinate: </span>
+                        <table class="inlinetable">
+                            <tr><td id="card_longitude"></td></tr>
+                            <tr><td id="card_latitude"></td></tr>
+                        </table>
+                    </li>
+                    <li class="list-group-item reducedpadding">
+                        <span class="font-weight-bold">Elevation: </span><span id="card_elevation"></span>
+                    </li>
                 </ul>
             </div>
             <div id="piediv" class="pie">
@@ -70,9 +78,9 @@
         </svg>
     </div>
 
-
-    <script src="js/script.js"></script>
+    <script src="js/geopoint.js"></script>
     <script src="js/usmap.js"></script>
+    <script src="js/script.js"></script>
 </div>
 </body>
 </html>

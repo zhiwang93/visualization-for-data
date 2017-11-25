@@ -28,14 +28,14 @@
 }
 
 .spot:hover {
-    fill: green;
-    opacity: 1;
-    stroke-width: 1px;
+    /*fill: black;*/
+    /*opacity: 0.5;*/
+    stroke-width: 4px;
     stroke: black;
 }
 
 .clicked {
-    fill: green;
+    fill: FireBrick;
     opacity: 1;
     stroke-width: 1px;
     stroke: black;
@@ -67,11 +67,17 @@
 }
 
 .reducedpadding {
-    padding: 0.5rem;
+    padding: 0.4rem;
 }
 
-.nopadding {
-    padding: 0;
+.reducefontsize {
+    font-size: 0.8rem;
+}
+
+.inlinetable {
+    display: inline-block;
+    padding-left: 0px;
+    vertical-align: top;
 }
 
 /*unused styles*/
@@ -98,6 +104,10 @@ nobutton{
     text-align: center;
     background-color: darkcyan;
     color: white;
+}
+
+.nopadding {
+    padding: 0;
 }
 /*************************************************/
 

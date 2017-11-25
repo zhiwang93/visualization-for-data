@@ -1,6 +1,6 @@
-d3.csv("dataset/us-airports.csv", function (error, airports) {
+d3.csv("dataset/us_airports.csv", function (error, airports) {
     let usmap = new Usmap(airports);
-    console.log(airports);
+    // console.log(airports);
     usmap.makeMap1();
     usmap.update1();
 });

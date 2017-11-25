@@ -94,14 +94,13 @@ class Usmap{
 
     update1() {
 
-        let airports = this.airports;
         let airportsmap = this.airportsmap;
         let projection = this.projection;
 
         let updateSpots = this.updateSpots;
         let updateLine = this.updateLine;
-        let updateCard = this.updateCard;
-        let updatePie = this.updatePie;
+        let updateInfo = this.updateInfo;
+        let updateSummary = this.updateSummary;
 
         //set actions after click
         d3.select("#spots").selectAll("circle")
@@ -109,8 +108,8 @@ class Usmap{
 
                 updateSpots(d3.select(this));
                 updateLine(d, projection, airportsmap);
-                updateCard(d);
-                updatePie(d);
+                updateInfo(d);
+                updateSummary(d);
 
                 d3.csv("dataset/ByMonth.csv", function (ByMonth) {
                     let data = null;
@@ -381,7 +380,7 @@ class Usmap{
                             break;
                         }
                     }
-                    console.log(data);
+                    // console.log(data);
                     if (data != null) {
                         let flightdata = [parseFloat(data["00.FlightCount"]),
                             parseFloat(data["06.FlightCount"]),
@@ -565,61 +564,44 @@ class Usmap{
                     return projection([d.lon, d.lat])[1];
                 })
                 .attr("x2", function (a) {
-                    var dest = airportsmap[a.DEST];
+                    let dest = airportsmap[a.DEST];
                     return dest == null ? projection([d.lon, d.lat])[0] : dest[0];
                 })
                 .attr("y2", function (a) {
-                    var dest = airportsmap[a.DEST];
+                    let dest = airportsmap[a.DEST];
                     return dest == null ? projection([d.lon, d.lat])[1] : dest[1];
                 })
                 .attr("class", "route");
         });
     }
+    updateInfo(d) {
 
-    updateCard(d) {
         let card = d3.select("#paneldiv")
             .attr("class", "col-xl-3 card panelafter")
         let title = d3.select("#card_title")
             .text(d.name)
-        let iata = d3.select("#card_iata")
-            .text("IATA Code: "+d.iata_code)
-        let type = d3.select("#card_type")
-            .text("Airport Type: "+d.type)
-        let latitude = d3.select("#card_latitude")
-            .text("Latitude: "+d.lat)
+        let code = d3.select("#card_code")
+            .text("IATA: "+d.iata_code+"\xa0\xa0\xa0\xa0\xa0"+"ICAO: "+d.icao_code)
+        let municipality = d3.select('#card_municipality')
+            .text(d.municipality+", "+d.iso_region.substring(3))
+
+        let point = new GeoPoint(Math.abs(d.lon), Math.abs(d.lat));
         let longitude = d3.select("#card_longitude")
-            .text("Longitude: "+d.lon)
+            .text(point.getLonDeg() + (d.lon < 0 ? 'W' : 'E'))
+        let latitude = d3.select("#card_latitude")
+            .text(point.getLatDeg() + (d.lat < 0 ? 'S' : 'N'))
 
-        d3.csv("dataset/Summary.csv", function (summary) {
-            let data = null;
-            for (let i = 0; i < summary.length; i++) {
-                if (d.iata_code == summary[i].Origin) {
-                    data = summary[i];
-                    break;
-                }
-            }
-            let count = d3.select("#card_count")
-                .text(function () {
-                    let result = "Annual Flights: ";
-                    result += data == null ? "" : data.TotalFlightCount;
-                    return result;
-                });
-            let delay = d3.select("#card_delay")
-                .text(function () {
-                    let result = "Average Delay: ";
-                    result += data == null ? "" : data.AvgDly + " minutes";
-                    return result;
-                });
-        });
+        let elevation = d3.select("#card_elevation")
+            .text(d.elevation_ft+" ft")
     }
+    updateSummary(d) {
 
-    updatePie(d) {
-
-        //remove all the elements first
+        //remove elements first
         d3.select("#piechart").selectAll("g").remove();
+        d3.select("#cardlist").selectAll(".litoberemoved").remove();
 
-        //fetch the corresponding data from Summary.csv regarding the iata_code
-        d3.csv("dataset/Summary.csv", function (summary) {
+        //fetch the corresponding data from summary.csv regarding the iata_code
+        d3.csv("dataset/summary.csv", function (summary) {
 
             let data = null;
             for (let i = 0; i < summary.length; i++) {
@@ -628,25 +610,71 @@ class Usmap{
                     break;
                 }
             }
-
             if (data == null) {
                 return;
             }
+
+            //annual flights
+            let count = d3.select("#cardlist").append("li")
+                .attr("class", "list-group-item reducedpadding litoberemoved")
+            count.append("span")
+                .attr("class", "font-weight-bold")
+                .text("Annual Flights: ")
+            count.append("span")
+                .text(data.Count)
+
+            //average delay
+            let delay = d3.select("#cardlist").append("li")
+                .attr("class", "list-group-item reducedpadding litoberemoved")
+            delay.append("span")
+                .attr("class", "font-weight-bold")
+                .text("Average Delay: ")
+            let delayTable = delay.append("table")
+                .attr("class", 'inlinetable')
+            delayTable.append("tr").append("td")
+                .text(parseFloat(data.DepDelay).toFixed(2)+"min (departure)")
+            delayTable.append("tr").append("td")
+                .text(parseFloat(data.ArrDelay).toFixed(2)+'min (arrival)')
+
+            //15min delay rate
+            let _15min = d3.select("#cardlist").append("li")
+                .attr("class", "list-group-item reducedpadding litoberemoved")
+            _15min.append("span")
+                .attr("class", "font-weight-bold")
+                .text("15+ min Delay: ")
+            let _15minTable = _15min.append("table")
+                .attr("class", 'inlinetable')
+            _15minTable.append("tr").append("td")
+                .text((parseFloat(data["15minDepDelay"]) * 100).toFixed(2)+"% (departure)")
+            _15minTable.append("tr").append("td")
+                .text((parseFloat(data["15minArrDelay"]) * 100).toFixed(2)+'% (arrival)')
+
+            //cancel rate
+            let cancel = d3.select("#cardlist").append("li")
+                .attr("class", "list-group-item reducedpadding litoberemoved")
+            cancel.append("span")
+                .attr("class", "font-weight-bold")
+                .text("Cancel Rate: ")
+            cancel.append("span")
+                .text((parseFloat(data["Cancelled"]) * 100).toFixed(2)+"%")
+
+            //cause of delay
+            let cause = d3.select("#cardlist").append("li")
+                .attr("class", "list-group-item reducedpadding litoberemoved")
+            cause.append("span")
+                .attr("class", "font-weight-bold")
+                .text("Cause of Delay")
+
             let dataset = [
-                {legend: "Carrier Delay", value: data["PercentCarrierDly"]},
-                {legend: "Weather Delay", value: data["PercentWeatherDly"]},
-                {legend: "NASA Delay", value: data["PercentNASDly"]},
-                {legend: "Security Delay", value: data["PercentSecurityDly"]},
-                {legend: "Late Aircraft Delay", value: data["PercentLateAircraftDly"]}
+                {legend: "Carrier Delay", value: data["CarrierDelay"]},
+                {legend: "Weather Delay", value: data["WeatherDelay"]},
+                {legend: "NASA Delay", value: data["NASDelay"]},
+                {legend: "Security Delay", value: data["SecurityDelay"]},
+                {legend: "Late Aircraft Delay", value: data["LateAircraftDelay"]}
             ];
 
-            //define width, height and color scale
-            // let width = document.getElementById("piediv").offsetWidth + 30;
-            // let height = document.getElementById("paneldiv").offsetHeight - document.getElementById("carddiv").offsetHeight;
-
             let width = 400;
-            let height = 240;
-
+            let height = 220;
             let colorScale = d3.scaleOrdinal(d3.schemeCategory10)
                 .domain(Array.from(dataset, function (d) {
                     return d.legend
@@ -693,46 +721,6 @@ class Usmap{
                 .scale(colorScale);
 
             legendgroup.call(legendOrdinal);
-
-            // // add label to pie chart
-            // let arc2 = d3.arc()
-            //     .outerRadius(90)
-            //     .innerRadius(90)
-            //
-            // function midAngle(d) {
-            //     return d.startAngle + (d.endAngle - d.startAngle) / 2;
-            // }
-            //
-            // groups.append("text")
-            //     .text(function(d) {
-            //         return d.data.legend;
-            //         // return parseFloat(d.data.value * 100).toFixed(2) + "%";
-            //     })
-            //     .attr("transform", function(d) {
-            //         let pos = arc2.centroid(d);
-            //         return "translate(" + pos + ")";
-            //     })
-            //     .style("text-anchor", function(d) {
-            //         return (midAngle(d)) < Math.PI ? "start" : "end";
-            //     })
-            //     .attr("class", "pietext")
         });
-    }
-
-    updateTop10(){
-    //     let airports = this.airports.slice(0, 10);
-    //     d3.select("#top10").select("svg").remove();
-    //
-    //     let svg = d3.select("#top10").append("svg")
-    //         .attr("width", 500);
-    //     .attr("height", 260);
-    //
-    //     let g = svg.append("g");
-    //     let bars = g.selectAll("rect").data(airports);
-    //     bars.enter().append("rect")
-    //         .attr("x", 0)
-    //         .attr("y", function(d, i){return i*20;})
-    //         .attr("height", 20)
-    //         .attr("width", function(d){return })
     }
 }
