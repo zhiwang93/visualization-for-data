@@ -1,5 +1,6 @@
 d3.csv("dataset/us_airports.csv", function (error, airports) {
-    let usmap = new Usmap(airports);
+    let stats = new Stats();
+    let usmap = new Usmap(airports, stats);
     usmap.makeMap1();
     usmap.update1();
 });

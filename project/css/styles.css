@@ -111,6 +111,16 @@ nobutton{
 }
 /*************************************************/
 
+/*line chart*/
+.DepDelayTime {
+    stroke: steelblue;
+}
+
+.ArrDelayTime {
+    stroke: crimson;
+}
+
+/*bar chart*/
 .xaxis path,
 .xaxis line {
     fill: none;
@@ -125,17 +135,17 @@ nobutton{
 }
 
 .bar1{
-    fill: lightgrey;
-    stroke: gray;
-    stroke-width: 1px;
+    fill: LightGray;
+    /*stroke: white;*/
+    /*stroke-width: 1px;*/
 }
 .bar2{
-    fill: LightGreen;
-    stroke: gray;
-    stroke-width: 1px;
+    fill: FireBrick;
+    /*stroke: white;*/
+    /*stroke-width: 1px;*/
 }
 .bar3{
     fill: LightBlue;
-    stroke: gray;
+    stroke: white;
     stroke-width: 1px;
 }
