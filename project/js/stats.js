@@ -11,7 +11,8 @@ class Stats {
 
         let hasContainer = this.hasContainer;
 
-        let updateBarChart = this.updateBarChart;
+        let updateDepBarChart = this.updateDepBarChart;
+        let updateArrBarChart = this.updateArrBarChart;
         let updateLineChart = this.updateLineChart;
 
         let removeContainer = this.removeContainer;
@@ -64,12 +65,12 @@ class Stats {
                 }))])
                 .range([0, height*0.8])
 
-            updateBarChart("month1", monthData);
-            updateBarChart("day1", dayData);
-            updateBarChart("hour1", hourData);
-            updateBarChart("month2", monthData);
-            updateBarChart("day2", dayData);
-            updateBarChart("hour2", hourData);
+            updateDepBarChart("month1", monthData);
+            updateDepBarChart("day1", dayData);
+            updateDepBarChart("hour1", hourData);
+            updateArrBarChart("month2", monthData);
+            updateArrBarChart("day2", dayData);
+            updateArrBarChart("hour2", hourData);
             updateLineChart("month3", monthData);
             updateLineChart("day3", dayData);
             updateLineChart("hour3", hourData)
@@ -101,7 +102,11 @@ class Stats {
         }
     }
 
-    updateBarChart(name, data) {
+    setHasContainer(has) {
+        this.hasContainer.value = has;
+    }
+
+    updateDepBarChart(name, data) {
 
         let width = 400;
         let height = 200;
@@ -129,7 +134,7 @@ class Stats {
             .attr("viewBox","0 0 "+width+" "+height);
 
         //draw xAxis
-        d3.select("#"+name+"x")
+        let x = d3.select("#"+name+"x")
             .attr("transform", "translate("+width*0.1+", "+height*0.9+")")
             .transition()
             .duration(1000)
@@ -171,12 +176,81 @@ class Stats {
             .duration(1000)
             .attr("y", 0)
             .attr("width", width * 0.7 / data.length)
-            .attr("height", function (d) {
-                if (name.slice(-1) == "1")
-                    return height*0.8 - yScale(parseInt(d.Count) * parseFloat(d["15minDepDelay"]));
-                else
-                    return height*0.8 - yScale(parseInt(d.Count) * parseFloat(d["15minArrDelay"]))
-            })
+            .attr("height", d => height*0.8 - yScale(parseInt(d.Count) * parseFloat(d["15minDepDelay"])))
+            .attr("class", "bar2")
+    }
+
+    updateArrBarChart(name, data) {
+
+        let width = 400;
+        let height = 200;
+
+        let xScale = d3.scaleBand()
+            .domain(data.map(function (obj) {
+                return obj.Time;
+            }))
+            .range([0, width*0.8])
+        let xAxis = d3.axisBottom()
+            .scale(xScale)
+
+        let limit = d3.max(data.map(function (obj) {
+            return parseInt(obj.Count2);
+        })) * 1.2;
+        let yScale = d3.scaleLinear()
+            .domain([limit, 0])
+            .range([0, height*0.8])
+        let yAxis = d3.axisLeft()
+            .scale(yScale)
+
+        //Set chart to be responsive
+        d3.select("#"+name)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox","0 0 "+width+" "+height);
+
+        //draw xAxis
+        let x = d3.select("#"+name+"x")
+            .attr("transform", "translate("+width*0.1+", "+height*0.9+")")
+            .transition()
+            .duration(1000)
+            .call(xAxis);
+
+        //draw yAxis
+        d3.select("#"+name+"y")
+            .attr("transform", "translate("+width*0.1+", "+height*0.1+")")
+            .transition()
+            .duration(1000)
+            .call(yAxis);
+
+        //draw bar chart1
+        let barsgroup = d3.select("#"+name+"z1")
+            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.9+") scale(1,-1)");
+
+        let bars = barsgroup.selectAll("rect")
+            .data(data)
+        bars.exit().remove();
+        bars = bars.enter().append("rect").merge(bars)
+            .attr("x", d => xScale(d.Time))
+            .transition()
+            .duration(1000)
+            .attr("y", 0)
+            .attr("width", width * 0.7 / data.length)
+            .attr("height", d => (height*0.8 - yScale(parseInt(d.Count2))))
+            .attr("class", "bar1")
+
+        //draw bar chart2
+        let barsgroup2 = d3.select("#"+name+"z2")
+            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.9+") scale(1,-1)");
+
+        let bars2 = barsgroup2.selectAll("rect")
+            .data(data)
+        bars2.exit().remove();
+        bars2 = bars2.enter().append("rect").merge(bars2)
+            .attr("x", d => xScale(d.Time))
+            .transition()
+            .duration(1000)
+            .attr("y", 0)
+            .attr("width", width * 0.7 / data.length)
+            .attr("height", d => height*0.8 - yScale(parseInt(d.Count2) * parseFloat(d["15minArrDelay"])))
             .attr("class", "bar2")
     }
 
@@ -237,7 +311,7 @@ class Stats {
         let generator = [{name: "DepDelayTime", value: depGenerator},
                          {name: "ArrDelayTime", value: arrGenerator}];
 
-        //draw dep line
+        //draw line
         let depPath = linesgroup.selectAll("path")
             .data(generator);
         depPath.exit().remove();
@@ -247,7 +321,5 @@ class Stats {
             .transition()
             .duration(1000)
             .attr("d", d => d.value);
-
-
     }
 }

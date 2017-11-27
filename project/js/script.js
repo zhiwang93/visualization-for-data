@@ -1,9 +1,35 @@
+let stats = new Stats();
+let usmap = new Usmap(stats);
 d3.csv("dataset/us_airports.csv", function (error, airports) {
-    let stats = new Stats();
-    let usmap = new Usmap(airports, stats);
-    usmap.makeMap1();
-    usmap.update1();
+    usmap.makeMap();
+    usmap.importData(airports);
+    usmap.makeSpots();
+    usmap.updateMap();
 });
+
+function checkbox() {
+
+    stats.removeContainer();
+    stats.setHasContainer(false);
+
+    if (document.getElementById("checkbox").checked) {
+        d3.csv("dataset/us_airports.csv", function (error, airports) {
+            usmap.importData(airports);
+            usmap.makeSpots();
+            usmap.updateMap();
+        });
+    } else {
+        d3.csv("dataset/us_airports_fltd.csv", function (error, airports) {
+            usmap.importData(airports);
+            usmap.makeSpots();
+            usmap.updateMap();
+        });
+    }
+}
+
+function clearMap() {
+    usmap.clearRoutes();
+}
 
 // var months = d3.scale.ordinal()
 //     .domain(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"])

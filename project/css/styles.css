@@ -106,8 +106,8 @@ nobutton{
     color: white;
 }
 
-.nopadding {
-    padding: 0;
+.minuspadding {
+    margin-bottom: -0.5rem;
 }
 /*************************************************/
 
