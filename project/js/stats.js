@@ -68,9 +68,11 @@ class Stats {
             updateDepBarChart("month1", monthData);
             updateDepBarChart("day1", dayData);
             updateDepBarChart("hour1", hourData);
+
             updateArrBarChart("month2", monthData);
             updateArrBarChart("day2", dayData);
             updateArrBarChart("hour2", hourData);
+
             updateLineChart("month3", monthData);
             updateLineChart("day3", dayData);
             updateLineChart("hour3", hourData)

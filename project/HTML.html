@@ -18,22 +18,23 @@
         <div id="mapdiv" class="col-xl-9">
             <div class="row minuspadding">
 
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <label class="form-check form-check-label">
                         <input id="checkbox" class="form-check-input" type="checkbox" checked="true" onchange="checkbox()">
                         Show all airports
                     </label>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-5">
                     <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary" type="button">Go!</button>
-                    </span>
+                        <span class="input-group-addon">Search</span>
+                        <input id="keyword" type="text" class="form-control" placeholder="IATA, ICAO or City Name" onkeyup="enterHit(event)">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button" onclick="searchAirport()">Go!</button>
+                        </span>
                     </div>
                 </div>
                 <div class="col-lg-2">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearMap()">Clear Map</button>
+                    <button id="button" type="button" class="btn btn-outline-secondary btn-sm" onclick="clearMap()">Clear Map</button>
                 </div>
             </div>
             <svg id="usmap"></svg>
@@ -68,12 +69,14 @@
     <div id="month" class="row"></div>
     <div id="day" class="row"></div>
     <div id="hour" class="row"></div>
-
-    <script src="js/geopoint.js"></script>
-    <script src="js/stats.js"></script>
-    <script src="js/usmap.js"></script>
-    <script src="js/script.js"></script>
+    <div id="force"></div>
 </div>
+
+<script src="js/geopoint.js"></script>
+<script src="js/force.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/usmap.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
 

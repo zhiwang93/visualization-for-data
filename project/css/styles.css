@@ -149,3 +149,16 @@ nobutton{
     stroke: white;
     stroke-width: 1px;
 }
+
+/*force layout*/
+.links line {
+    stroke: #999;
+    stroke-opacity: 0.6;
+}
+.nodes circle {
+     stroke: #fff;
+     stroke-width: 1.5px;
+ }
+.nodes circle:hover {
+    stroke: #000;
+}

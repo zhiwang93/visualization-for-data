@@ -11,8 +11,6 @@ class Usmap{
         this.projection = d3.geoAlbersUsa()
             .translate([this.mapWidth / 2, this.mapHeight / 2])
             .scale([this.mapWidth * 1.36]);
-
-
     }
 
     importData(airports) {
@@ -78,13 +76,22 @@ class Usmap{
     makeSpots() {
 
         let airports = this.airports;
+        let airportsmap = this.airportsmap;
         let projection = this.projection;
+
+        let updateSpots = this.updateSpots;
+        let updateLine = this.updateLine;
+        let updateInfo = this.updateInfo;
+        let updateSummary = this.updateSummary;
+        let stats = this.stats;
+
         let usmap = d3.select("#usmap");
 
         //remove elements first
         usmap.select("#spots").remove();
         usmap.select("#routes").remove();
 
+        console.log(airports);
         //draw spots
         let spotsGroup = usmap.append("g")
             .attr("id", "spots");
@@ -104,27 +111,6 @@ class Usmap{
                 else return 0;
             })
             .attr("class", "spot")
-    }
-
-    clearRoutes() {
-        d3.select("#routes").remove();
-        d3.select("#spots").selectAll("circle")
-            .attr("class", "spot");
-    }
-
-    updateMap() {
-
-        let airportsmap = this.airportsmap;
-        let projection = this.projection;
-
-        let updateSpots = this.updateSpots;
-        let updateLine = this.updateLine;
-        let updateInfo = this.updateInfo;
-        let updateSummary = this.updateSummary;
-        let stats = this.stats;
-
-        //set actions after click
-        d3.select("#spots").selectAll("circle")
             .on("click", function (d) {
 
                 updateSpots(d3.select(this));
@@ -136,10 +122,26 @@ class Usmap{
             });
     }
 
+    clearRoutes() {
+        d3.select("#routes").remove();
+        d3.select("#spots").selectAll("circle")
+            .attr("class", "spot");
+    }
+
+    simulateClick(d, x) {
+        this.updateSpots(x);
+        this.updateLine(d, this.projection, this.airportsmap);
+        this.updateInfo(d);
+        this.updateSummary(d);
+        this.stats.updateStats(d);
+    }
+
     updateSpots(x) {
         //remove class for all the spots
         d3.select("#spots").selectAll("circle")
             .attr("class", "spot");
+        d3.select("#force").selectAll("circle")
+            .attr("class", null)
 
         //set class for the selected spots
         x.attr("class", "clicked");
