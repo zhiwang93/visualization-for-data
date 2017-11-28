@@ -164,15 +164,54 @@ nobutton{
 }
 
 /*hierarchy layout*/
-.circletext {
+.node {
     font-family: sans-serif;
     font-size: 0.5rem;
 }
 
-.circlelink {
+.node:hover {
+    fill: #000;
+}
+
+.link {
     stroke-width: 0.01rem;
     stroke: steelblue;
     stroke-opacity: 0.5;
     fill: none;
     pointer-events: none;
+}
+
+.node:hover,
+.node--source,
+.node--target {
+    font-weight: 700;
+}
+
+.node--source {
+    fill: #2ca02c;
+}
+
+.node--target {
+    fill: #d62728;
+}
+
+.link--source,
+.link--target {
+    stroke-opacity: 1;
+    stroke-width: 2px;
+}
+
+.link--source {
+    stroke: #d62728;
+}
+
+.link--target {
+    stroke: #2ca02c;
+}
+
+
+/*zoom in*/
+.zoomin {
+    padding: 0;
+    margin: -rem;
 }

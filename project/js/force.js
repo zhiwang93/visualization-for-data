@@ -30,12 +30,12 @@ class Force {
 
         let svg = div.append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox","0 0 "+width+" "+height);
+            .attr("viewBox","0 0 "+width * 0.8+" "+height * 0.8);
 
         let simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
             .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(width / 2, height / 2));
+            .force("center", d3.forceCenter(width / 2, height * 0.8 / 2));
 
         d3.json("dataset/force.json", function (error, graph) {
 

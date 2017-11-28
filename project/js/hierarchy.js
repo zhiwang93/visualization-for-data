@@ -21,14 +21,17 @@ class Hierarchy {
                 return d.x / 180 * Math.PI;
             });
 
-        var svg = d3.select("#hierarchy").append("svg")
-            .attr("width", diameter)
-            .attr("height", diameter)
-            .append("g")
+        let div = d3.select("#hierarchy")
+
+        let svg = div.append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox","0 0 "+diameter * 0.9+" "+diameter * 0.9);
+
+        let group = svg.append("g")
             .attr("transform", "translate(" + radius + "," + radius + ")");
 
-        var link = svg.append("g").selectAll(".circlelink"),
-            node = svg.append("g").selectAll(".circletext");
+        let link = group.append("g").selectAll(".link"),
+            node = group.append("g").selectAll(".node");
 
         d3.json("dataset/hierarchy.json", function (error, classes) {
             if (error) throw error;
@@ -46,13 +49,13 @@ class Hierarchy {
                 .each(function (d) {
                     d.source = d[0], d.target = d[d.length - 1];
                 })
-                .attr("class", "circlelink")
+                .attr("class", "link")
                 .attr("d", line);
 
             node = node
                 .data(root.leaves())
                 .enter().append("text")
-                .attr("class", "circletext")
+                .attr("class", "node")
                 .attr("dy", "0.31em")
                 .attr("transform", function (d) {
                     return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)");
@@ -62,8 +65,47 @@ class Hierarchy {
                 })
                 .text(function (d) {
                     return d.data.key;
-                });
+                })
+                .on("mouseover", mouseovered)
+                .on("mouseout", mouseouted);
         });
+
+        function mouseovered(d) {
+            node
+                .each(function (n) {
+                    n.target = n.source = false;
+                });
+
+            link
+                .classed("link--target", function (l) {
+                    if (l.target === d) return l.source.source = true;
+                })
+                .classed("link--source", function (l) {
+                    if (l.source === d) return l.target.target = true;
+                })
+                .filter(function (l) {
+                    return l.target === d || l.source === d;
+                })
+                .raise();
+
+            node
+                .classed("node--target", function (n) {
+                    return n.target;
+                })
+                .classed("node--source", function (n) {
+                    return n.source;
+                });
+        }
+
+        function mouseouted(d) {
+            link
+                .classed("link--target", false)
+                .classed("link--source", false);
+
+            node
+                .classed("node--target", false)
+                .classed("node--source", false);
+        }
 
 // Lazily construct the package hierarchy from class names.
         function packageHierarchy(classes) {
@@ -107,7 +149,6 @@ class Hierarchy {
             });
 
             return imports;
-
         }
     }
 }
