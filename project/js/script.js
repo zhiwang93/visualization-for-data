@@ -1,11 +1,13 @@
 let stats = new Stats();
 let usmap = new Usmap(stats);
 let force = new Force(usmap);
+let hierarchy = new Hierarchy(usmap);
 d3.csv("dataset/us_airports.csv", function (error, airports) {
     usmap.makeMap();
     usmap.importData(airports);
     usmap.makeSpots();
     force.draw();
+    hierarchy.draw();
 });
 
 //the function that called by checkbox
