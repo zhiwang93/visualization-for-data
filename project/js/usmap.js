@@ -6,7 +6,7 @@ class Usmap{
         this.offsetX = 0;
         this.offsetY = 0;
         this.mapWidth = 1600;
-        this.mapHeight = 1015;
+        this.mapHeight = 1050;
 
         this.projection = d3.geoAlbersUsa()
             .translate([this.mapWidth / 2, this.mapHeight / 2])
@@ -123,9 +123,12 @@ class Usmap{
 
     clearRoutes() {
         d3.select("#routes").remove();
+
         d3.select("#spots").selectAll("circle")
             .attr("class", "spot");
         d3.select("#force").selectAll("circle")
+            .attr("class", null)
+        d3.select("#force").selectAll("line")
             .attr("class", null)
     }
 
@@ -355,7 +358,7 @@ class Usmap{
     }
 
     updateStats(d) {
-        d3.csv("dataset/"+d.iata_code+".csv", function (error, data) {
+        d3.csv("dataset/"+d.iata_code+".csv", function (data) {
 
             let monthData = [];
             let dailyData = [];

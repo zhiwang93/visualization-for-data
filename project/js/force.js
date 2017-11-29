@@ -9,7 +9,7 @@ class Force {
         let usmap = this.usmap;
 
         let width = 1600
-        let height = 1025
+        let height = 1050
 
         let domain = [-10, -5, 0, 5, 10, 15];
         // let range = ["DarkGreen", "SeaGreen", "DarkSeaGreen", "LightSteelBlue", "SkyBlue", "Crimson", "DarkRed"];
