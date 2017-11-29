@@ -41,8 +41,6 @@
     stroke: black;
 }
 
-
-
 #maplegend .label {
     font-size: 1.5rem;
 }
@@ -78,6 +76,10 @@
 
 .reducedpadding {
     padding: 0.4rem;
+}
+
+.nopadding {
+    padding: 0rem;
 }
 
 .reducefontsize {
@@ -128,18 +130,6 @@ nobutton{
 }
 
 /*bar chart*/
-.xaxis path,
-.xaxis line {
-    fill: none;
-    stroke: none;
-}
-
-.yaxis path,
-.yaxis line {
-    fill: none;
-    stroke: black;
-    stroke-width: 1px;
-}
 
 .bar1{
     fill: LightGray;
@@ -150,11 +140,6 @@ nobutton{
     fill: FireBrick;
     /*stroke: white;*/
     /*stroke-width: 1px;*/
-}
-.bar3{
-    fill: LightBlue;
-    stroke: white;
-    stroke-width: 1px;
 }
 
 /*force layout*/
@@ -173,6 +158,14 @@ nobutton{
 .forcelinkclicked {
     stroke: #9b1717;
     stroke-opacity: 1;
+}
+
+#force .label {
+    font-size: 0.7rem;
+ }
+
+#force .legendTitle {
+    font-size: 0.8rem;
 }
 
 /*hierarchy layout*/
@@ -233,8 +226,6 @@ nobutton{
     stroke: #ffb51d
 }
 
-/*zoom in*/
-.zoomin {
-    padding: 0;
-    margin: 0;
+#hierarchy .label {
+    font-size: 0.7rem;
 }

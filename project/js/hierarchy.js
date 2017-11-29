@@ -25,11 +25,32 @@ class Hierarchy {
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox","0 0 "+diameter * 0.9+" "+diameter * 0.9);
 
-        let group = svg.append("g")
+        let legendgroup1 = svg.append("g")
+            .attr("id", "hierarchylegend1")
+            .attr("transform", "translate(10, 30)");
+
+        let legendgroup2 = svg.append("g")
+            .attr("id", "hierarchylegend2")
+            .attr("transform", "translate("+ (diameter * 0.9 - 120) +", "+ (diameter * 0.9 - 70) +")");
+
+        let colorScale = d3.scaleOrdinal()
+            .domain(["Inbound Only", "Outbound Only", "Inbound & Outbound"])
+            .range(["#ffb51d", "#68a064", "#dc6c6f"])
+        let legendOrdinal = d3.legendColor()
+            .shape("path", d3.symbol().type(d3.symbolSquare).size(42)())
+            .shapePadding(7)
+            .scale(colorScale);
+
+        legendgroup1.call(legendOrdinal);
+        legendgroup2.call(legendOrdinal);
+
+        let graphgroup = svg.append("g")
             .attr("transform", "translate(" + (diameter * 0.9 / 2) + "," + (diameter * 0.9 / 2) + ")");
 
-        let link = group.append("g").selectAll(".link"),
-            node = group.append("g").selectAll(".node");
+        let link = graphgroup.append("g").selectAll(".link"),
+            node = graphgroup.append("g").selectAll(".node");
+
+
 
         d3.json("dataset/hierarchy.json", function (error, classes) {
 

@@ -22,7 +22,7 @@ class Force {
             "#ffdd76",
             "#ffab29",
             "#de5551"];
-        let colorScale = d3.scaleQuantile()
+        let colorScale = d3.scaleThreshold()
             .domain(domain)
             .range(range3);
 
@@ -32,16 +32,33 @@ class Force {
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox","0 0 "+width * 0.5+" "+height * 0.5);
 
+        let legendgroup = svg.append("g")
+            .attr("id", "forcelegend")
+            .attr("transform", "translate("+ (width * 0.5 - 150) +", "+ (height * 0.5 - 200) +")");
+
+        let legendQuantile = d3.legendColor()
+            .labelFormat(d3.format(".2f"))
+            .labels(d3.legendHelpers.thresholdLabels)
+            .title("Average Departure Delay (in minutes)")
+            .titleWidth(150)
+            .shape("path", d3.symbol().type(d3.symbolSquare).size(60)())
+            .shapePadding(5)
+            .scale(colorScale)
+
+        legendgroup.call(legendQuantile);
+
+
+
         let simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
             .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(width * 0.55 / 2, height * 0.5 / 2));
+            .force("center", d3.forceCenter(width * 0.5 / 2, height * 0.5 / 2));
 
         d3.json("dataset/force.json", function (error, graph) {
 
-            let linkLayer = svg.append("g")
+            let linkgroup = svg.append("g")
                 .attr("id", "forcelinks")
-            let links = linkLayer.selectAll("line")
+            let links = linkgroup.selectAll("line")
                 .data(graph.links)
                 .enter().append("line")
                 .attr("stroke-width", function (d) {
@@ -50,9 +67,9 @@ class Force {
                 })
                 .attr("class", "forcelink");
 
-            let nodeLayer = svg.append("g")
+            let nodegroup = svg.append("g")
                 .attr("id", "forcenodes")
-            let nodes = nodeLayer
+            let nodes = nodegroup
                 .selectAll("circle")
                 .data(graph.nodes)
                 .enter().append("circle")
