@@ -41,11 +41,7 @@
     stroke: black;
 }
 
-.clicked2 {
-    fill: red;
-    stroke: red;
-    stroke-width: 1px;
-}
+
 
 #maplegend .label {
     font-size: 1.5rem;
@@ -162,16 +158,21 @@ nobutton{
 }
 
 /*force layout*/
-.links line {
+.forcelink {
     stroke: #999;
     stroke-opacity: 0.6;
 }
-.nodes circle {
+.forcenode {
      stroke: #fff;
      stroke-width: 1.5px;
  }
-.nodes circle:hover {
+.forcenode:hover {
     stroke: #000;
+}
+
+.forcelinkclicked {
+    stroke: #9b1717;
+    stroke-opacity: 1;
 }
 
 /*hierarchy layout*/

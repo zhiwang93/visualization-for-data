@@ -127,9 +127,9 @@ class Usmap{
         d3.select("#spots").selectAll("circle")
             .attr("class", "spot");
         d3.select("#force").selectAll("circle")
-            .attr("class", null)
+            .attr("class", "forcenode")
         d3.select("#force").selectAll("line")
-            .attr("class", null)
+            .attr("class", "forcelink")
     }
 
     simulateClick(d, x) {
@@ -145,12 +145,12 @@ class Usmap{
         d3.select("#spots").selectAll("circle")
             .attr("class", "spot");
         d3.select("#force").selectAll("circle")
-            .attr("class", null)
+            .attr("class", "forcenode")
 
-
-        //set class for the selected spots
+        //set class for the selected spots on the map
         x.attr("class", "clicked");
 
+        //set class for the selected spots on the other map
         if (d.Count == null) {
             d3.select("#force").selectAll("circle")
                 .classed("clicked", function (n) {
@@ -198,7 +198,7 @@ class Usmap{
         });
 
         d3.select("#force").selectAll("line")
-            .classed("clicked2", function (n) {
+            .classed("forcelinkclicked", function (n) {
                 return n.source.iata_code == d.iata_code || n.target.iata_code == d.iata_code;
             })
     }

@@ -40,17 +40,18 @@ class Force {
         d3.json("dataset/force.json", function (error, graph) {
 
             let linkLayer = svg.append("g")
-                .attr("class", "links");
+                .attr("id", "forcelinks")
             let links = linkLayer.selectAll("line")
                 .data(graph.links)
                 .enter().append("line")
                 .attr("stroke-width", function (d) {
                     let w = Math.log(parseInt(d.value)) / 50;
                     return w;
-                });
+                })
+                .attr("class", "forcelink");
 
             let nodeLayer = svg.append("g")
-                .attr("class", "nodes");
+                .attr("id", "forcenodes")
             let nodes = nodeLayer
                 .selectAll("circle")
                 .data(graph.nodes)
@@ -62,6 +63,7 @@ class Force {
                 .attr("fill", function (d) {
                     return colorScale(d.DepDelay);
                 })
+                .attr("class", "forcenode")
                 .call(d3.drag()
                     .on("start", dragstarted)
                     .on("drag", dragged)
