@@ -8,8 +8,8 @@ class Force {
 
         let usmap = this.usmap;
 
-        let width = 800
-        let height = 800
+        let width = 1600
+        let height = 1025
 
         let domain = [-10, -5, 0, 5, 10, 15];
         // let range = ["DarkGreen", "SeaGreen", "DarkSeaGreen", "LightSteelBlue", "SkyBlue", "Crimson", "DarkRed"];
@@ -18,10 +18,10 @@ class Force {
             "#386434",
             "#4e8b4f",
             "#89b938",
+            "#82c7db",
             "#ffdd76",
             "#ffab29",
-            "#de5551",
-            "#b24647"];
+            "#de5551"];
         let colorScale = d3.scaleQuantile()
             .domain(domain)
             .range(range3);
@@ -30,12 +30,12 @@ class Force {
 
         let svg = div.append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox","0 0 "+width * 0.8+" "+height * 0.8);
+            .attr("viewBox","0 0 "+width * 0.5+" "+height * 0.5);
 
         let simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
             .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(width / 2, height * 0.8 / 2));
+            .force("center", d3.forceCenter(width * 0.55 / 2, height * 0.5 / 2));
 
         d3.json("dataset/force.json", function (error, graph) {
 

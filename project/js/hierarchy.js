@@ -5,15 +5,13 @@ class Hierarchy {
     }
 
     draw() {
-        var diameter = 960,
-            radius = diameter / 2,
-            innerRadius = radius - 120;
+        let diameter = 960;
 
-        var cluster = d3.cluster()
-            .size([360, innerRadius]);
+        let cluster = d3.cluster()
+            .size([360, diameter / 2 -120]);
 
-        var line = d3.radialLine()
-            .curve(d3.curveBundle.beta(0.85))
+        let line = d3.radialLine()
+            .curve(d3.curveBundle.beta(0.5))
             .radius(function (d) {
                 return d.y;
             })
@@ -28,15 +26,14 @@ class Hierarchy {
             .attr("viewBox","0 0 "+diameter * 0.9+" "+diameter * 0.9);
 
         let group = svg.append("g")
-            .attr("transform", "translate(" + radius + "," + radius + ")");
+            .attr("transform", "translate(" + (diameter * 0.9 / 2) + "," + (diameter * 0.9 / 2) + ")");
 
         let link = group.append("g").selectAll(".link"),
             node = group.append("g").selectAll(".node");
 
         d3.json("dataset/hierarchy.json", function (error, classes) {
-            if (error) throw error;
 
-            var root = packageHierarchy(classes)
+            let root = packageHierarchy(classes)
                 .sum(function (d) {
                     return d.size;
                 });
@@ -56,7 +53,7 @@ class Hierarchy {
                 .data(root.leaves())
                 .enter().append("text")
                 .attr("class", "node")
-                .attr("dy", "0.31em")
+                .attr("dy", "0.2em")
                 .attr("transform", function (d) {
                     return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)");
                 })
@@ -64,24 +61,51 @@ class Hierarchy {
                     return d.x < 180 ? "start" : "end";
                 })
                 .text(function (d) {
-                    return d.data.key;
+                    let result = d.data.municipality + " (" + d.data.key + "), " +d.data.iso_region.slice(3, 5)
+                    return result;
                 })
-                .on("mouseover", mouseovered)
-                .on("mouseout", mouseouted);
+                .on("mouseover", mouseover)
+                .on("mouseout", mouseout);
         });
 
-        function mouseovered(d) {
+        function mouseover(d) {
+
             node
                 .each(function (n) {
                     n.target = n.source = false;
                 });
 
             link
-                .classed("link--target", function (l) {
-                    if (l.target === d) return l.source.source = true;
+                .each(function (l) {
+                    if (l.target === d)
+                        l.source.source = true;
+                    if (l.source === d)
+                        l.target.target = true;
+                })
+
+            link
+                .classed("link--both", function (l) {
+                    if (l.target === d) {
+                        return l.source.target && l.source.source;
+                    } else if (l.source === d) {
+                        return l.target.target && l.target.source;
+                    } else {
+                        return false;
+                    }
                 })
                 .classed("link--source", function (l) {
-                    if (l.source === d) return l.target.target = true;
+                    if (l.target === d) {
+                        return l.source.source && !l.source.target;
+                    } else {
+                        return false;
+                    }
+                })
+                .classed("link--target", function (l) {
+                    if (l.source === d) {
+                        return l.target.target && !l.target.source;
+                    } else {
+                        return false;
+                    }
                 })
                 .filter(function (l) {
                     return l.target === d || l.source === d;
@@ -90,29 +114,33 @@ class Hierarchy {
 
             node
                 .classed("node--target", function (n) {
-                    return n.target;
+                    return n.target && !n.source;
                 })
                 .classed("node--source", function (n) {
-                    return n.source;
+                    return n.source && !n.target;
+                })
+                .classed("node--both", function (n) {
+                    return n.target && n.source;
                 });
         }
 
-        function mouseouted(d) {
+        function mouseout(d) {
             link
+                .classed("link--both", false)
                 .classed("link--target", false)
                 .classed("link--source", false);
 
             node
+                .classed("node--both", false)
                 .classed("node--target", false)
                 .classed("node--source", false);
         }
 
-// Lazily construct the package hierarchy from class names.
         function packageHierarchy(classes) {
-            var map = {};
+            let map = {};
 
             function find(name, data) {
-                var node = map[name], i;
+                let node = map[name], i;
                 if (!node) {
                     node = map[name] = data || {name: name, children: []};
                     if (name.length) {
@@ -131,7 +159,6 @@ class Hierarchy {
             return d3.hierarchy(map[""]);
         }
 
-// Return a list of imports for the given array of nodes.
         function packageImports(nodes) {
             var map = {},
                 imports = [];

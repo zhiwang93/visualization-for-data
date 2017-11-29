@@ -91,7 +91,6 @@ class Usmap{
         usmap.select("#spots").remove();
         usmap.select("#routes").remove();
 
-        console.log(airports);
         //draw spots
         let spotsGroup = usmap.append("g")
             .attr("id", "spots");
@@ -113,7 +112,7 @@ class Usmap{
             .attr("class", "spot")
             .on("click", function (d) {
 
-                updateSpots(d3.select(this));
+                updateSpots(d, d3.select(this));
                 updateLine(d, projection, airportsmap);
                 updateInfo(d);
                 updateSummary(d);
@@ -126,25 +125,41 @@ class Usmap{
         d3.select("#routes").remove();
         d3.select("#spots").selectAll("circle")
             .attr("class", "spot");
+        d3.select("#force").selectAll("circle")
+            .attr("class", null)
     }
 
     simulateClick(d, x) {
-        this.updateSpots(x);
+        this.updateSpots(d, x);
         this.updateLine(d, this.projection, this.airportsmap);
         this.updateInfo(d);
         this.updateSummary(d);
         this.stats.updateStats(d);
     }
 
-    updateSpots(x) {
+    updateSpots(d, x) {
         //remove class for all the spots
         d3.select("#spots").selectAll("circle")
             .attr("class", "spot");
         d3.select("#force").selectAll("circle")
             .attr("class", null)
 
+
         //set class for the selected spots
         x.attr("class", "clicked");
+
+        if (d.Count == null) {
+            d3.select("#force").selectAll("circle")
+                .classed("clicked", function (n) {
+                    return n.iata_code == d.iata_code;
+                })
+        } else {
+            d3.select("#spots").selectAll("circle")
+                .classed("clicked", function (n) {
+                    return n.iata_code == d.iata_code;
+                })
+        }
+
     }
 
     updateLine(d, projection, airportsmap) {
@@ -178,6 +193,11 @@ class Usmap{
                 })
                 .attr("class", "route");
         });
+
+        d3.select("#force").selectAll("line")
+            .classed("clicked2", function (n) {
+                return n.source.iata_code == d.iata_code || n.target.iata_code == d.iata_code;
+            })
     }
 
     updateInfo(d) {
@@ -226,8 +246,12 @@ class Usmap{
             count.append("span")
                 .attr("class", "font-weight-bold")
                 .text("Annual Flights: ")
-            count.append("span")
-                .text(data.Count)
+            let countTable = count.append("table")
+                .attr("class", 'inlinetable')
+            countTable.append("tr").append("td")
+                .text(data.Count+" (departure)")
+            countTable.append("tr").append("td")
+                .text(data.Count2+" (arrival)")
 
             //average delay
             let delay = d3.select("#cardlist").append("li")
@@ -240,7 +264,7 @@ class Usmap{
             delayTable.append("tr").append("td")
                 .text(parseFloat(data.DepDelay).toFixed(2)+"min (departure)")
             delayTable.append("tr").append("td")
-                .text(parseFloat(data.ArrDelay).toFixed(2)+'min (arrival)')
+                .text(parseFloat(data.ArrDelay).toFixed(2)+"min (arrival)")
 
             //15min delay rate
             let _15min = d3.select("#cardlist").append("li")
@@ -253,7 +277,7 @@ class Usmap{
             _15minTable.append("tr").append("td")
                 .text((parseFloat(data["15minDepDelay"]) * 100).toFixed(2)+"% (departure)")
             _15minTable.append("tr").append("td")
-                .text((parseFloat(data["15minArrDelay"]) * 100).toFixed(2)+'% (arrival)')
+                .text((parseFloat(data["15minArrDelay"]) * 100).toFixed(2)+"% (arrival)")
 
             //cancel rate
             let cancel = d3.select("#cardlist").append("li")
@@ -331,7 +355,7 @@ class Usmap{
     }
 
     updateStats(d) {
-        d3.csv("dataset/"+d.iata_code+".csv", function (data) {
+        d3.csv("dataset/"+d.iata_code+".csv", function (error, data) {
 
             let monthData = [];
             let dailyData = [];

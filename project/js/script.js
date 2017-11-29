@@ -51,3 +51,26 @@ function enterHit(event) {
     if (event.which == 13 || event.KeyCode == 13)
         searchAirport();
 }
+
+//the function that called by button "Change Map"
+function flip() {
+    let force = document.getElementById("force");
+    let nonforce = document.getElementById("nonforce");
+    let button = document.getElementById("changemap")
+
+    if (force.style.visibility == "hidden") {
+        force.style.visibility = "visible";
+        force.style.height = "auto";
+        nonforce.style.visibility = "hidden";
+        nonforce.style.height = 0;
+        button.innerText = "Change to GeoMap";
+    } else {
+        force.style.visibility = "hidden";
+        force.style.height = 0;
+        nonforce.style.visibility = "visible";
+        nonforce.style.height = "auto";
+        button.innerText = "Change to NodesMap";
+
+    }
+
+}

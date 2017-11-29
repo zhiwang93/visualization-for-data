@@ -35,10 +35,16 @@
 }
 
 .clicked {
-    fill: FireBrick;
+    fill: #7a1717;
     opacity: 1;
     stroke-width: 1px;
     stroke: black;
+}
+
+.clicked2 {
+    fill: red;
+    stroke: red;
+    stroke-width: 1px;
 }
 
 #maplegend .label {
@@ -47,6 +53,14 @@
 
 #maplegend .swatch {
     fill: green;
+}
+
+.minuspadding {
+    margin-bottom: -0.5rem;
+}
+
+.incresepaddingleft {
+    padding-left: 2rem;
 }
 
 /*panel styles*/
@@ -106,9 +120,6 @@ nobutton{
     color: white;
 }
 
-.minuspadding {
-    margin-bottom: -0.5rem;
-}
 /*************************************************/
 
 /*line chart*/
@@ -166,11 +177,32 @@ nobutton{
 /*hierarchy layout*/
 .node {
     font-family: sans-serif;
-    font-size: 0.5rem;
+    font-size: 0.4rem;
+    font-weight: lighter;
+    fill: #ccc;
 }
 
 .node:hover {
     fill: #000;
+    font-weight: bold;
+}
+
+.node--source,
+.node--target,
+.node--both {
+    font-weight: bold;
+}
+
+.node--both {
+    fill: #dc6c6f;
+}
+
+.node--target {
+    fill: #68a064
+}
+
+.node--source {
+    fill: #ffb51d;
 }
 
 .link {
@@ -181,37 +213,27 @@ nobutton{
     pointer-events: none;
 }
 
-.node:hover,
-.node--source,
-.node--target {
-    font-weight: 700;
-}
-
-.node--source {
-    fill: #2ca02c;
-}
-
-.node--target {
-    fill: #d62728;
-}
-
+.link--both,
 .link--source,
 .link--target {
     stroke-opacity: 1;
-    stroke-width: 2px;
+    stroke-width: 0.05rem;
 }
 
-.link--source {
-    stroke: #d62728;
+.link--both {
+    stroke: #dc6c6f;
 }
 
 .link--target {
-    stroke: #2ca02c;
+    stroke: #68a064;
 }
 
+.link--source {
+    stroke: #ffb51d
+}
 
 /*zoom in*/
 .zoomin {
     padding: 0;
-    margin: -rem;
+    margin: 0;
 }
