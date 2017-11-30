@@ -11,7 +11,7 @@ class Hierarchy {
             .size([360, diameter / 2 -120]);
 
         let line = d3.radialLine()
-            .curve(d3.curveBundle.beta(0.5))
+            .curve(d3.curveBundle.beta(0.9))
             .radius(function (d) {
                 return d.y;
             })
@@ -23,15 +23,15 @@ class Hierarchy {
 
         let svg = div.append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox","0 0 "+diameter * 0.9+" "+diameter * 0.9);
+            .attr("viewBox","0 0 "+diameter+" "+diameter);
 
         let legendgroup1 = svg.append("g")
             .attr("id", "hierarchylegend1")
-            .attr("transform", "translate(10, 30)");
+            .attr("transform", "translate(10, 80)");
 
         let legendgroup2 = svg.append("g")
             .attr("id", "hierarchylegend2")
-            .attr("transform", "translate("+ (diameter * 0.9 - 120) +", "+ (diameter * 0.9 - 70) +")");
+            .attr("transform", "translate("+ (diameter - 120) +", "+ (diameter - 120) +")");
 
         let colorScale = d3.scaleOrdinal()
             .domain(["Inbound Only", "Outbound Only", "Inbound & Outbound"])
@@ -44,13 +44,47 @@ class Hierarchy {
         legendgroup1.call(legendOrdinal);
         legendgroup2.call(legendOrdinal);
 
+        //creading tooltip
+        let tip = d3.tip()
+            .attr('class', 'hierarchy-tip')
+            .offset([-30, 0])
+            .html(function(d) {
+                let point = new GeoPoint(Math.abs(d.data.lon), Math.abs(d.data.lat));
+                return "<h7><strong>"+ d.data.fullname+"</strong></h7>"+
+                    "<table>"+
+                    "<tr>"+
+                    "<td class='tooltipindex'>City</td>"+
+                    "<td>"+d.data.municipality+", "+d.data.iso_region.slice(3)+"</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                    "<td class='tooltipindex'>Coordinate</td>"+
+                    "<td>"+point.getLonDeg() + (d.data.lon < 0 ? 'W' : 'E') +" "+ point.getLatDeg() + (d.data.lat < 0 ? 'S' : 'N')+"</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                    "<td class='tooltipindex'>Elevation</td>"+
+                    "<td>"+d.data.elevation_ft+" ft</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                    "<td class='tooltipindex'>Annual Flights</td>"+
+                    "<td>"+d.data.Count+"(Dep), "+d.data.Count2+"(Arr)</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                    "<td class='tooltipindex'>Average Delay</td>"+
+                    "<td>"+d.data.DepDelay.toFixed(2)+"min (Dep), "+d.data.ArrDelay.toFixed(2)+"min (Arr)</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                    "<td class='tooltipindex'>15+ min Delay</td>"+
+                    "<td>"+d.data["15minDepDelay"].toFixed(2)+"min (Dep), "+d.data["15minArrDelay"].toFixed(2)+"min (Arr)</td>"+
+                    "</tr>"+
+                    "</table>";
+            })
+        svg.call(tip);
+
         let graphgroup = svg.append("g")
-            .attr("transform", "translate(" + (diameter * 0.9 / 2) + "," + (diameter * 0.9 / 2) + ")");
+            .attr("transform", "translate(" + (diameter / 2) + "," + (diameter / 2) + ")");
 
         let link = graphgroup.append("g").selectAll(".link"),
             node = graphgroup.append("g").selectAll(".node");
-
-
 
         d3.json("dataset/hierarchy.json", function (error, classes) {
 
@@ -90,6 +124,8 @@ class Hierarchy {
         });
 
         function mouseover(d) {
+
+            tip.show(d);
 
             node
                 .each(function (n) {
@@ -146,6 +182,9 @@ class Hierarchy {
         }
 
         function mouseout(d) {
+
+            tip.hide(d);
+
             link
                 .classed("link--both", false)
                 .classed("link--target", false)

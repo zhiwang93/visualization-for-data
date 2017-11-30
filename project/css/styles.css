@@ -80,6 +80,7 @@
 
 .nopadding {
     padding: 0rem;
+    /*margin: -50px 0px;*/
 }
 
 .reducefontsize {
@@ -157,7 +158,8 @@ nobutton{
 
 .forcelinkclicked {
     stroke: #9b1717;
-    stroke-opacity: 1;
+    stroke-opacity: 0.6;
+    stroke-width: 0.5px;
 }
 
 #force .label {
@@ -228,4 +230,84 @@ nobutton{
 
 #hierarchy .label {
     font-size: 0.7rem;
+}
+
+/*tooltip*/
+.force-tip {
+     /*line-height: 1;*/
+     /*font-weight: bold;*/
+     font-size: 0.5rem;
+     padding: 6px;
+     background: rgba(0, 0, 0, 0.8);
+     color: #fff;
+     border-radius: 2px;
+ }
+
+.force-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    padding: 4px;
+    font-size: 0.5rem;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+.hierarchy-tip {
+    line-height: 1;
+    /*font-weight: bold;*/
+    font-size: 0.5rem;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border-radius: 2px;
+}
+
+.hierarchy-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    padding: 4px;
+    font-size: 0.5rem;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.5);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+.pie-tip {
+    line-height: 1;
+    /*font-weight: bold;*/
+    font-size: 0.6rem;
+    padding: 6px;
+    background: #DDD;
+    color: #222;
+    border-radius: 2px;
+}
+
+.tooltipindex {
+    color: #d4d4d4;
+    font-weight: bold;
+}
+
+h7 {
+    margin-bottom: 0.5rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: inherit;
+    font-size: 0.7rem;
+}
+
+h8 {
+    margin-bottom: 0.5rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: inherit;
+    font-size: 0.5rem;
 }

@@ -28,10 +28,12 @@ class Force {
 
         let div = d3.select("#force")
 
+        //setting svg to be responsive
         let svg = div.append("svg")
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox","0 0 "+width * 0.5+" "+height * 0.5);
 
+        //creating legend
         let legendgroup = svg.append("g")
             .attr("id", "forcelegend")
             .attr("transform", "translate("+ (width * 0.5 - 150) +", "+ (height * 0.5 - 200) +")");
@@ -47,7 +49,21 @@ class Force {
 
         legendgroup.call(legendQuantile);
 
-
+        //creading tooltip
+        let tip = d3.tip()
+            .attr('class', 'force-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                console.log(d)
+                return "<h8><strong>"+ d.name+"</strong></h8>"+
+                    "<table>"+
+                    "<tr>"+
+                    "<td class='tooltipindex'>City: </td>"+
+                    "<td>"+d.municipality+", "+d.iso_region.slice(3)+"</td>"+
+                    "</tr>"+
+                    "</table>";
+            })
+        svg.call(tip);
 
         let simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(d => d.id))
@@ -88,11 +104,8 @@ class Force {
                 .on("click", function (d) {
                     usmap.simulateClick(d, d3.select(this));
                 })
-
-            nodes.append("title")
-                .text(function (d) {
-                    return d.id;
-                });
+                .on("mouseover", tip.show)
+                .on("mouseout", tip.hide)
 
             simulation.nodes(graph.nodes);
             simulation.force("link")

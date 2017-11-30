@@ -87,6 +87,22 @@ class Usmap{
 
         let usmap = d3.select("#usmap");
 
+        //creading tooltip
+        let tip = d3.tip()
+            .attr('class', 'force-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                console.log(d)
+                return "<h8><strong>"+ d.name+"</strong></h8>"+
+                    "<table>"+
+                    "<tr>"+
+                    "<td class='tooltipindex'>City: </td>"+
+                    "<td>"+d.municipality+", "+d.iso_region.slice(3)+"</td>"+
+                    "</tr>"+
+                    "</table>";
+            })
+        usmap.call(tip);
+
         //remove elements first
         usmap.select("#spots").remove();
         usmap.select("#routes").remove();
@@ -110,6 +126,8 @@ class Usmap{
                 else return 0;
             })
             .attr("class", "spot")
+            .on("mouseover", tip.show)
+            .on("mouseout", tip.hide)
             .on("click", function (d) {
 
                 updateSpots(d, d3.select(this));
@@ -292,6 +310,7 @@ class Usmap{
                 .text((parseFloat(data["Cancelled"]) * 100).toFixed(2)+"%")
 
             //cause of delay
+
             let cause = d3.select("#cardlist").append("li")
                 .attr("class", "list-group-item reducedpadding litoberemoved")
             cause.append("span")
@@ -318,6 +337,17 @@ class Usmap{
                 .attr("preserveAspectRatio", "xMinYMin meet")
                 .attr("viewBox","0 0 "+width+" "+height);
 
+            //creading tooltip
+            let tip = d3.tip()
+                .attr('class', 'pie-tip')
+                .offset([0, 0])
+                .html(function(d) {
+                    console.log(d)
+                    return "<span><strong>"+ d.data.legend+": </strong></span>"+
+                           "<span>"+ (d.data.value * 100).toFixed(2)+"%</span>"
+                })
+            piechart.call(tip);
+
             //draw pie chart
             let chartgroup = piechart.append("g")
                 .attr("transform", "translate(100, 120)");
@@ -342,7 +372,9 @@ class Usmap{
                 .attr("stroke", "#FFFFFF")
                 .attr("fill", function (d) {
                     return colorScale(d.data.legend);
-                });
+                })
+                .on("mouseover", tip.show)
+                .on("mouseout", tip.hide)
 
             //draw legend
             let legendgroup = piechart.append("g")
