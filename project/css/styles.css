@@ -319,3 +319,9 @@ h8 {
     color: inherit;
     font-size: 0.5rem;
 }
+
+.footer {
+    font-size: 0.7rem;
+    font-weight: lighter;
+    color: Silver;
+}
