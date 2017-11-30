@@ -14,6 +14,7 @@ class Stats {
         let updateDepBarChart = this.updateDepBarChart;
         let updateArrBarChart = this.updateArrBarChart;
         let updateLineChart = this.updateLineChart;
+        let updateAreaChart = this.updateAreaChart;
 
         let removeContainer = this.removeContainer;
         let appendContainer = this.appendContainer;
@@ -75,8 +76,12 @@ class Stats {
 
             updateLineChart("month3", monthData);
             updateLineChart("day3", dayData);
-            updateLineChart("hour3", hourData)
-        })
+            updateLineChart("hour3", hourData);
+
+            updateAreaChart("month4", monthData);
+            updateAreaChart("day4", dayData);
+            updateAreaChart("hour4", hourData);
+        });
     }
 
     appendContainer() {
@@ -323,5 +328,80 @@ class Stats {
             .transition()
             .duration(1000)
             .attr("d", d => d.value);
+    }
+    updateAreaChart(name, data){
+        console.log(name);
+        console.log(data);
+
+        let width = 400;
+        let height = 200;
+
+        let xScale = d3.scaleBand()
+            .domain(data.map(function (obj) {
+                return obj.Time;
+            }))
+            .range([0, width*0.8]);
+
+        let xAxis = d3.axisBottom()
+            .scale(xScale);
+
+        let limit = d3.max(data.map(function (obj) {
+            return parseFloat(obj.CarrierDelay) +
+                parseFloat(obj.WeatherDelay) +
+                parseFloat(obj.NASDelay) +
+                parseFloat(obj.SecurityDelay) +
+                parseFloat(obj.LateAircraftDelay);
+        }));
+
+        let yScale = d3.scaleLinear()
+            .domain([0.0, limit])
+            .range([height*0.8, 0.0])
+        let yAxis = d3.axisLeft()
+            .scale(yScale);
+
+        //Set chart to be responsive
+        d3.select("#"+name)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox","0 0 "+width+" "+height);
+
+        //draw xAxis
+        d3.select("#"+name+"x")
+            .attr("transform", "translate("+width*0.1+", "+height*0.9+")")
+            .transition()
+            .duration(1000)
+            .call(xAxis);
+
+        //draw yAxis
+        d3.select("#"+name+"y")
+            .attr("transform", "translate("+width*0.1+", "+height*0.1+")")
+            .transition()
+            .duration(1000)
+            .call(yAxis);
+
+        var area = d3.area()
+            .x(function(d) { return xScale(d.data.Time); })
+            .y0(function(d) { return yScale(d[0]); })
+            .y1(function(d) { return yScale(d[1]); });
+
+        let areasgroup = d3.select("#"+name+"z")
+            .attr("transform", "translate("+(width*0.1+width*0.4/data.length)+", "+height*0.1+") scale(1,1)");
+
+        var keys = ["CarrierDelay",
+            "WeatherDelay",
+            "NASDelay",
+            "SecurityDelay",
+            "LateAircraftDelay"];
+        var stack = d3.stack();
+        var z = d3.scaleOrdinal(d3.schemeCategory10).domain(keys);
+        stack.keys(keys);
+
+        let areaPath = areasgroup.selectAll("path")
+            .data(stack(data));
+        areaPath.exit().remove();
+        areaPath = areaPath.enter().append("path").merge(areaPath)
+            .style("fill", function(d) { return z(d.key); })
+            .transition()
+            .duration(1000)
+            .attr("d", area);
     }
 }
