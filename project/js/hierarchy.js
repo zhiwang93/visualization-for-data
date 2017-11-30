@@ -74,7 +74,7 @@ class Hierarchy {
                     "</tr>"+
                     "<tr>"+
                     "<td class='tooltipindex'>15+ min Delay</td>"+
-                    "<td>"+d.data["15minDepDelay"].toFixed(2)+"min (Dep), "+d.data["15minArrDelay"].toFixed(2)+"min (Arr)</td>"+
+                    "<td>"+(d.data["15minDepDelay"] * 100).toFixed(2)+"% (Dep), "+(d.data["15minArrDelay"] * 100).toFixed(2)+"% (Arr)</td>"+
                     "</tr>"+
                     "</table>";
             })
