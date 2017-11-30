@@ -16,6 +16,7 @@ class Stats {
         let updateLineChart = this.updateLineChart;
         let updateAreaChart = this.updateAreaChart;
         let rotateHour = this.rotateHour;
+        let updateLegend = this.updateLegend;
 
         let removeContainer = this.removeContainer;
         let appendContainer = this.appendContainer;
@@ -84,11 +85,16 @@ class Stats {
             updateAreaChart("hour4", hourData);
 
             rotateHour();
+
+            updateLegend();
         });
     }
 
     appendContainer() {
-        for (let row of ["month", "day", "hour"]) {
+
+        d3.select("#hrdiv").append("hr");
+
+        for (let row of ["legend", "month", "day", "hour"]) {
             let rowdiv = d3.select("#"+row);
             for (let i = 1; i <= 4; i++) {
                 let div = rowdiv.append("div")
@@ -102,12 +108,14 @@ class Stats {
                     temp.append("g").attr("id", row+i+"z1")
                     temp.append("g").attr("id", row+i+"z2")
                 }
+                svg.append("g").attr("id", row+i+"t")
             }
         }
     }
 
     removeContainer() {
-        for (let row of ["month", "day", "hour"]) {
+        d3.select("#hrdiv").selectAll("hr").remove();
+        for (let row of ["legend", "month", "day", "hour"]) {
             d3.select("#"+row).selectAll("div").remove();
         }
     }
@@ -143,7 +151,8 @@ class Stats {
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox","0 0 "+width+" "+height * 1.2);
 
-        svg.append("text")
+        d3.select("#"+name+"t").selectAll("text").remove();
+        d3.select("#"+name+"t").append("text")
             .attr("transform", "translate("+ (width * 0.15) +", "+ (height* 0.1) +")")
             .text(function () {
                 let type = name.slice(0, 1);
@@ -164,6 +173,8 @@ class Stats {
 
         //draw yAxis
         let y = d3.select("#"+name+"y");
+        y.selectAll(".texttoberemoved").remove();
+
         y.attr("transform", "translate("+width*0.1+", "+height*0.15+")")
             .transition()
             .duration(1000)
@@ -171,6 +182,7 @@ class Stats {
         y.append("text")
             .attr("transform", "translate(75, 10)")
             .attr("fill", "#000")
+            .attr("class", "texttoberemoved")
             .text("number of flight")
 
         //draw bar chart1
@@ -233,7 +245,8 @@ class Stats {
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox","0 0 "+width+" "+height * 1.2);
 
-        svg.append("text")
+        d3.select("#"+name+"t").selectAll("text").remove();
+        d3.select("#"+name+"t").append("text")
             .attr("transform", "translate("+ (width * 0.18) +", "+ (height*0.1) +")")
             .text(function () {
                 let type = name.slice(0, 1);
@@ -254,6 +267,8 @@ class Stats {
 
         //draw yAxis
         let y = d3.select("#"+name+"y");
+        y.selectAll(".texttoberemoved").remove();
+
         y.attr("transform", "translate("+width*0.1+", "+ height*0.15+")")
             .transition()
             .duration(1000)
@@ -261,6 +276,7 @@ class Stats {
         y.append("text")
             .attr("transform", "translate(75, 10)")
             .attr("fill", "#000")
+            .attr("class", "texttoberemoved")
             .text("number of flight")
 
         //draw bar chart1
@@ -323,7 +339,8 @@ class Stats {
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox","0 0 "+width+" "+height * 1.2);
 
-        svg.append("text")
+        d3.select("#"+name+"t").selectAll("text").remove();
+        d3.select("#"+name+"t").append("text")
             .attr("transform", "translate("+ (width * 0.25) +", "+ (height*0.1) +")")
             .text(function () {
                 let type = name.slice(0, 1);
@@ -345,6 +362,8 @@ class Stats {
 
         //draw yAxis
         let y = d3.select("#"+name+"y");
+        y.selectAll(".texttoberemoved").remove();
+
         y.attr("transform", "translate("+width*0.1+", "+height*0.15+")")
             .transition()
             .duration(1000)
@@ -353,6 +372,7 @@ class Stats {
         y.append("text")
             .attr("transform", "translate(95, 10)")
             .attr("fill", "#000")
+            .attr("class", "texttoberemoved")
             .text("average delay (min)")
 
         //setup line chart
@@ -385,8 +405,6 @@ class Stats {
     }
 
     updateAreaChart(name, data){
-        console.log(name);
-        console.log(data);
 
         let width = 400;
         let height = 200;
@@ -415,20 +433,33 @@ class Stats {
             .scale(yScale);
 
         //Set chart to be responsive
-        d3.select("#"+name)
+        let svg = d3.select("#"+name)
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox","0 0 "+width+" "+height);
+            .attr("viewBox","0 0 "+width+" "+height*1.2);
+
+        d3.select("#"+name+"t").selectAll("text").remove();
+        d3.select("#"+name+"t").append("text")
+            .attr("transform", "translate("+ (width * 0.20) +", "+ (height*0.1) +")")
+            .text(function () {
+                let type = name.slice(0, 1);
+                if (type == "m")
+                    return "percentage of causes of delay"
+                if (type == "d")
+                    return "percentage of causes of delay"
+                if (type == "h")
+                    return "percentage of causes of delay"
+            })
 
         //draw xAxis
         d3.select("#"+name+"x")
-            .attr("transform", "translate("+width*0.1+", "+height*0.9+")")
+            .attr("transform", "translate("+width*0.1+", "+height*0.95+")")
             .transition()
             .duration(1000)
             .call(xAxis);
 
         //draw yAxis
         d3.select("#"+name+"y")
-            .attr("transform", "translate("+width*0.1+", "+height*0.1+")")
+            .attr("transform", "translate("+width*0.1+", "+height*0.15+")")
             .transition()
             .duration(1000)
             .call(yAxis);
@@ -439,7 +470,7 @@ class Stats {
             .y1(function(d) { return yScale(d[1]); });
 
         let areasgroup = d3.select("#"+name+"z")
-            .attr("transform", "translate("+(width*0.1+width*0.4/data.length)+", "+height*0.1+") scale(1,1)");
+            .attr("transform", "translate("+(width*0.1+width*0.4/data.length)+", "+height*0.15+") scale(1,1)");
 
         var keys = ["CarrierDelay",
             "WeatherDelay",
@@ -470,5 +501,63 @@ class Stats {
             d3.select("#" + item + "3y").selectAll(".tick")
                 .attr("class", "dashedtick")
         }
+    }
+
+    updateLegend() {
+
+        let width = 400;
+        let height = 50;
+
+        //Set chart to be responsive
+        for (let i = 1; i <= 4; i++) {
+            let svg = d3.select("#legend"+i)
+                .attr("preserveAspectRatio", "xMinYMin meet")
+                .attr("viewBox","0 0 "+width+", "+height*1.2);
+        }
+
+        let legendgroup1 = d3.select("#legend1x")
+            .attr("id", "statslegend1")
+            .attr("transform", "translate("+(width / 4)+", "+(height / 4)+")");
+        let legendgroup2 = d3.select("#legend2x")
+            .attr("id", "statslegend2")
+            .attr("transform", "translate("+(width / 4)+", "+(height / 4)+")");
+        let legendgroup3 = d3.select("#legend3x")
+            .attr("id", "statslegend3")
+            .attr("transform", "translate("+(width / 3)+", "+(height / 4)+")");
+        let legendgroup4 = d3.select("#legend4x")
+            .attr("id", "statslegend4")
+            .attr("transform", "translate("+(width / 15)+", "+(height / 4)+")");
+
+        let colorScale12 = d3.scaleOrdinal()
+            .domain(["regular", "delay for 15+ minutes"])
+            .range(["LightGrey", "FireBrick"])
+        let legendOrdinal12 = d3.legendColor()
+            .orient("horizontal")
+            .shape("path", d3.symbol().type(d3.symbolSquare).size(80)())
+            .shapePadding(130)
+            .scale(colorScale12);
+
+        let colorScale3 = d3.scaleOrdinal()
+            .domain(["departure", "arrival"])
+            .range(["steelblue", "crimson"])
+        let legendOrdinal3 = d3.legendColor()
+            .orient("horizontal")
+            .shape("path", d3.symbol().type(d3.symbolSquare).size(80)())
+            .shapePadding(130)
+            .scale(colorScale3);
+
+        let colorScale4 = d3.scaleOrdinal(d3.schemeCategory10)
+            .domain(["Carrier Delay", "Weather Delay", "N A S A Delay", "Security Delay", "Late Aircraft Delay"]);
+        let legendOrdinal4 = d3.legendColor()
+            .orient("horizontal")
+            .labelWrap(85)
+            .shape("path", d3.symbol().type(d3.symbolSquare).size(80)())
+            .shapePadding(70)
+            .scale(colorScale4);
+
+        legendgroup1.call(legendOrdinal12);
+        legendgroup2.call(legendOrdinal12);
+        legendgroup3.call(legendOrdinal3);
+        legendgroup4.call(legendOrdinal4);
     }
 }

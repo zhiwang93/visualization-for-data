@@ -13,8 +13,8 @@ d3.csv("dataset/us_airports.csv", function (error, airports) {
 //the function that called by checkbox
 function checkbox() {
 
-    stats.removeContainer();
-    stats.setHasContainer(false);
+    // stats.removeContainer();
+    // stats.setHasContainer(false);
 
     if (document.getElementById("checkbox").checked) {
         d3.csv("dataset/us_airports.csv", function (error, airports) {

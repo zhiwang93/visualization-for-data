@@ -121,6 +121,10 @@ nobutton{
 
 /*************************************************/
 
+#legend .label {
+    font-size: 1rem;
+}
+
 /*line chart*/
 .DepDelayTime {
     stroke: steelblue;
