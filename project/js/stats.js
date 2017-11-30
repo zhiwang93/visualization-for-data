@@ -94,11 +94,15 @@ class Stats {
 
         d3.select("#hrdiv").append("hr");
 
-        for (let row of ["legend", "month", "day", "hour"]) {
+        for (let row of ["month", "day", "hour"]) {
             let rowdiv = d3.select("#"+row);
             for (let i = 1; i <= 4; i++) {
                 let div = rowdiv.append("div")
                     .attr("class", "col-xl-3");
+                if (row == "month") {
+                    div.append("svg")
+                        .attr("id", "legend"+i)
+                }
                 let svg = div.append("svg")
                     .attr("id", row+i)
                 svg.append("g").attr("id", row+i+"x")
@@ -115,7 +119,7 @@ class Stats {
 
     removeContainer() {
         d3.select("#hrdiv").selectAll("hr").remove();
-        for (let row of ["legend", "month", "day", "hour"]) {
+        for (let row of ["month", "day", "hour"]) {
             d3.select("#"+row).selectAll("div").remove();
         }
     }
@@ -513,18 +517,19 @@ class Stats {
             let svg = d3.select("#legend"+i)
                 .attr("preserveAspectRatio", "xMinYMin meet")
                 .attr("viewBox","0 0 "+width+", "+height*1.2);
+            svg.selectAll("g").remove();
         }
 
-        let legendgroup1 = d3.select("#legend1x")
+        let legendgroup1 = d3.select("#legend1").append("g")
             .attr("id", "statslegend1")
             .attr("transform", "translate("+(width / 4)+", "+(height / 4)+")");
-        let legendgroup2 = d3.select("#legend2x")
+        let legendgroup2 = d3.select("#legend2").append("g")
             .attr("id", "statslegend2")
             .attr("transform", "translate("+(width / 4)+", "+(height / 4)+")");
-        let legendgroup3 = d3.select("#legend3x")
+        let legendgroup3 = d3.select("#legend3").append("g")
             .attr("id", "statslegend3")
             .attr("transform", "translate("+(width / 3)+", "+(height / 4)+")");
-        let legendgroup4 = d3.select("#legend4x")
+        let legendgroup4 = d3.select("#legend4").append("g")
             .attr("id", "statslegend4")
             .attr("transform", "translate("+(width / 15)+", "+(height / 4)+")");
 
