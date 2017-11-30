@@ -92,7 +92,6 @@ class Usmap{
             .attr('class', 'force-tip')
             .offset([-10, 0])
             .html(function(d) {
-                console.log(d)
                 return "<h8><strong>"+ d.name+"</strong></h8>"+
                     "<table>"+
                     "<tr>"+
@@ -342,7 +341,6 @@ class Usmap{
                 .attr('class', 'pie-tip')
                 .offset([0, 0])
                 .html(function(d) {
-                    console.log(d)
                     return "<span><strong>"+ d.data.legend+": </strong></span>"+
                            "<span>"+ (d.data.value * 100).toFixed(2)+"%</span>"
                 })

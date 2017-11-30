@@ -14,6 +14,7 @@ class Stats {
         let updateDepBarChart = this.updateDepBarChart;
         let updateArrBarChart = this.updateArrBarChart;
         let updateLineChart = this.updateLineChart;
+        let rotateHour = this.rotateHour;
 
         let removeContainer = this.removeContainer;
         let appendContainer = this.appendContainer;
@@ -75,7 +76,9 @@ class Stats {
 
             updateLineChart("month3", monthData);
             updateLineChart("day3", dayData);
-            updateLineChart("hour3", hourData)
+            updateLineChart("hour3", hourData);
+
+            rotateHour();
         })
     }
 
@@ -131,27 +134,43 @@ class Stats {
             .scale(yScale)
 
         //Set chart to be responsive
-        d3.select("#"+name)
+        let svg = d3.select("#"+name)
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox","0 0 "+width+" "+height);
+            .attr("viewBox","0 0 "+width+" "+height * 1.2);
+
+        svg.append("text")
+            .attr("transform", "translate("+ (width * 0.15) +", "+ (height* 0.1) +")")
+            .text(function () {
+                let type = name.slice(0, 1);
+                if (type == "m")
+                    return "outbound flights distribution over year"
+                if (type == "d")
+                    return "outbound flights distribution over week"
+                if (type == "h")
+                    return "outbound flights distribution over day"
+            })
 
         //draw xAxis
-        let x = d3.select("#"+name+"x")
-            .attr("transform", "translate("+width*0.1+", "+height*0.9+")")
+        let x = d3.select("#"+name+"x");
+        x.attr("transform", "translate("+width*0.1+", "+height*0.95+")")
             .transition()
             .duration(1000)
             .call(xAxis);
 
         //draw yAxis
-        d3.select("#"+name+"y")
-            .attr("transform", "translate("+width*0.1+", "+height*0.1+")")
+        let y = d3.select("#"+name+"y");
+        y.attr("transform", "translate("+width*0.1+", "+height*0.15+")")
             .transition()
             .duration(1000)
-            .call(yAxis);
+            .call(yAxis)
+        y.append("text")
+            .attr("transform", "translate(75, 10)")
+            .attr("fill", "#000")
+            .text("number of flight")
 
         //draw bar chart1
         let barsgroup = d3.select("#"+name+"z1")
-            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.9+") scale(1,-1)");
+            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.95+") scale(1,-1)");
 
         let bars = barsgroup.selectAll("rect")
             .data(data)
@@ -167,7 +186,7 @@ class Stats {
 
         //draw bar chart2
         let barsgroup2 = d3.select("#"+name+"z2")
-            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.9+") scale(1,-1)");
+            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.95+") scale(1,-1)");
 
         let bars2 = barsgroup2.selectAll("rect")
             .data(data)
@@ -205,27 +224,43 @@ class Stats {
             .scale(yScale)
 
         //Set chart to be responsive
-        d3.select("#"+name)
+        let svg = d3.select("#"+name)
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox","0 0 "+width+" "+height);
+            .attr("viewBox","0 0 "+width+" "+height * 1.2);
+
+        svg.append("text")
+            .attr("transform", "translate("+ (width * 0.18) +", "+ (height*0.1) +")")
+            .text(function () {
+                let type = name.slice(0, 1);
+                if (type == "m")
+                    return "inbound flights distribution over year"
+                if (type == "d")
+                    return "inbound flights distribution over week"
+                if (type == "h")
+                    return "inbound flights distribution over day"
+            })
 
         //draw xAxis
-        let x = d3.select("#"+name+"x")
-            .attr("transform", "translate("+width*0.1+", "+height*0.9+")")
+        let x = d3.select("#"+name+"x");
+        x.attr("transform", "translate("+width*0.1+", "+height*0.95+")")
             .transition()
             .duration(1000)
             .call(xAxis);
 
         //draw yAxis
-        d3.select("#"+name+"y")
-            .attr("transform", "translate("+width*0.1+", "+height*0.1+")")
+        let y = d3.select("#"+name+"y");
+        y.attr("transform", "translate("+width*0.1+", "+ height*0.15+")")
             .transition()
             .duration(1000)
             .call(yAxis);
+        y.append("text")
+            .attr("transform", "translate(75, 10)")
+            .attr("fill", "#000")
+            .text("number of flight")
 
         //draw bar chart1
         let barsgroup = d3.select("#"+name+"z1")
-            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.9+") scale(1,-1)");
+            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.95+") scale(1,-1)");
 
         let bars = barsgroup.selectAll("rect")
             .data(data)
@@ -241,7 +276,7 @@ class Stats {
 
         //draw bar chart2
         let barsgroup2 = d3.select("#"+name+"z2")
-            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.9+") scale(1,-1)");
+            .attr("transform", "translate("+(width*0.1+width*0.05/data.length)+", "+height*0.95+") scale(1,-1)");
 
         let bars2 = barsgroup2.selectAll("rect")
             .data(data)
@@ -275,30 +310,49 @@ class Stats {
             .domain([limit, -limit])
             .range([0, height*0.8])
         let yAxis = d3.axisLeft()
+            .tickSize(-width)
             .scale(yScale)
 
         //Set chart to be responsive
-        d3.select("#"+name)
+        let svg = d3.select("#"+name)
             .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox","0 0 "+width+" "+height);
+            .attr("viewBox","0 0 "+width+" "+height * 1.2);
+
+        svg.append("text")
+            .attr("transform", "translate("+ (width * 0.25) +", "+ (height*0.1) +")")
+            .text(function () {
+                let type = name.slice(0, 1);
+                if (type == "m")
+                    return "average flight delay over year"
+                if (type == "d")
+                    return "average flight delay over week"
+                if (type == "h")
+                    return "average flight delay over day"
+            })
 
         //draw xAxis
-        d3.select("#"+name+"x")
-            .attr("transform", "translate("+width*0.1+", "+height*0.5+")")
+        let x = d3.select("#"+name+"x");
+        x.attr("transform", "translate("+width*0.1+", "+height*0.95+")")
             .transition()
             .duration(1000)
             .call(xAxis);
+        x.selectAll(".domain").remove();
 
         //draw yAxis
-        d3.select("#"+name+"y")
-            .attr("transform", "translate("+width*0.1+", "+height*0.1+")")
+        let y = d3.select("#"+name+"y");
+        y.attr("transform", "translate("+width*0.1+", "+height*0.15+")")
             .transition()
             .duration(1000)
             .call(yAxis);
+        y.selectAll(".domain").remove();
+        y.append("text")
+            .attr("transform", "translate(95, 10)")
+            .attr("fill", "#000")
+            .text("average delay (min)")
 
         //setup line chart
         let linesgroup = d3.select("#"+name+"z")
-            .attr("transform", "translate("+(width*0.1+width*0.4/data.length)+", "+height*0.9+") scale(1,-1)");
+            .attr("transform", "translate("+(width*0.1+width*0.4/data.length)+", "+height*0.95+") scale(1,-1)");
 
         let depGenerator = d3.line()
             .x(d => xScale(d.Time))
@@ -323,5 +377,17 @@ class Stats {
             .transition()
             .duration(1000)
             .attr("d", d => d.value);
+    }
+
+    rotateHour() {
+        for (let i = 1; i <=4; i++) {
+            d3.select("#hour"+i+"x").selectAll("text")
+                .attr("transform", "translate(-24, 18), rotate(-45)");
+        }
+
+        for (let item of ["month", "day", "hour"]) {
+            d3.select("#"+item+"3y").selectAll(".tick")
+                .attr("class", "dashedtick")
+        }
     }
 }
