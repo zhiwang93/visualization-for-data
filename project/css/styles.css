@@ -61,13 +61,17 @@
 
 .panelbefore {
     opacity: 0;
+    height: 0;
 }
 
 .panelafter {
     opacity: 1;
+    height: auto;
+}
+
+.panel {
     padding: 15px;
     max-width: 400px;
-    /*min-height: 550px;*/
 }
 
 .pie {
@@ -75,7 +79,16 @@
 }
 
 .reducedpadding {
-    padding: 0.4rem;
+     padding: 0.4rem;
+ }
+
+.collapsedtitle {
+    padding: 0.5rem 1rem;
+    text-align: center;
+}
+
+.collapsedtitle a {
+    color: grey;
 }
 
 .nopadding {
@@ -128,6 +141,7 @@ nobutton{
 /*line chart*/
 .DepDelayTime {
     stroke: steelblue;
+    stroke-width: 2px;
 }
 
 .ArrDelayTime {

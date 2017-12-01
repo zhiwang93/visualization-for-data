@@ -10,6 +10,22 @@
     <link rel="stylesheet" href="css/styles.css"/>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+    <script src="js/tip.js"></script>
+    <script src="js/geopoint.js"></script>
+    <script src="js/hierarchy.js"></script>
+    <script src="js/force.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/usmap.js"></script>
+    <script src="js/script.js"></script>
 </head>
 
 <body>
@@ -48,7 +64,7 @@
                 <svg id="usmap"></svg>
             </div>
         </div>
-        <div id="paneldiv" class="col-xl-3 card panelbefore">
+        <div id="paneldiv" class="col-xl-3 card panel panelbefore">
             <div id="carddiv">
                 <div class="card-body reducedpadding">
                     <h4 id="card_title" class="card-title"></h4>
@@ -80,10 +96,49 @@
         </div>
     </div>
     <div id="hrdiv"></div>
-    <div id="legend" class="row"></div>
-    <div id="month" class="row"></div>
-    <div id="day" class="row"></div>
-    <div id="hour" class="row"></div>
+    <div id="accordion" class="panelbefore" role="tablist">
+        <div class="card">
+            <div class="card-header collapsedtitle" role="tab" id="headingOne">
+                <h6 class="mb-0">
+                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Monthly Statistical Data
+                    </a>
+                </h6>
+            </div>
+            <div id="collapseOne" class="collapse show reducedpadding" role="tabpanel" aria-labelledby="headingOne"
+                 data-parent="#accordion">
+                <div id="month" class="row"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header collapsedtitle" role="tab" id="headingTwo">
+                <h6 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false"
+                       aria-controls="collapseTwo">
+                        Daily Statistical Data
+                    </a>
+                </h6>
+            </div>
+            <div id="collapseTwo" class="collapse show reducedpadding" role="tabpanel" aria-labelledby="headingTwo"
+                 data-parent="#accordion">
+                <div id="day" class="row"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header collapsedtitle" role="tab" id="headingThree">
+                <h6 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false"
+                       aria-controls="collapseThree">
+                        Hourly Statistical Data
+                    </a>
+                </h6>
+            </div>
+            <div id="collapseThree" class="collapse show reducedpadding" role="tabpanel" aria-labelledby="headingThree"
+                 data-parent="#accordion">
+                <div id="hour" class="row"></div>
+            </div>
+        </div>
+    </div>
     <hr>
     <h4>Airport Connections of the United States</h4>
     <div class="row">
@@ -105,14 +160,6 @@
         </div>
     </div>
 </div>
-
-<script src="js/tip.js"></script>
-<script src="js/geopoint.js"></script>
-<script src="js/hierarchy.js"></script>
-<script src="js/force.js"></script>
-<script src="js/stats.js"></script>
-<script src="js/usmap.js"></script>
-<script src="js/script.js"></script>
 </body>
 </html>
 

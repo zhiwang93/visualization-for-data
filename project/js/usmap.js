@@ -129,6 +129,7 @@ class Usmap{
             .on("mouseout", tip.hide)
             .on("click", function (d) {
 
+
                 updateSpots(d, d3.select(this));
                 updateLine(d, projection, airportsmap);
                 updateInfo(d);

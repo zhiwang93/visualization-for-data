@@ -68,6 +68,13 @@ class Stats {
                 }))])
                 .range([0, height*0.8])
 
+            d3.select("#collapseOne")
+                .attr("class", "collapse show reducedpadding");
+            d3.select("#collapseTwo")
+                .attr("class", "collapse show reducedpadding");
+            d3.select("#collapseThree")
+                .attr("class", "collapse show reducedpadding");
+
             updateDepBarChart("month1", monthData);
             updateDepBarChart("day1", dayData);
             updateDepBarChart("hour1", hourData);
@@ -86,25 +93,28 @@ class Stats {
 
             rotateHour();
 
-            updateLegend();
+            updateLegend("month");
+            updateLegend("day");
+            updateLegend("hour");
         });
     }
 
     appendContainer() {
 
         d3.select("#hrdiv").append("hr");
+        d3.select("#accordion")
+            .attr("class", "panelafter")
 
         for (let row of ["month", "day", "hour"]) {
             let rowdiv = d3.select("#"+row);
             for (let i = 1; i <= 4; i++) {
                 let div = rowdiv.append("div")
                     .attr("class", "col-xl-3");
-                if (row == "month") {
-                    div.append("svg")
-                        .attr("id", "legend"+i)
-                }
+
                 let svg = div.append("svg")
                     .attr("id", row+i)
+                let legend = div.append("svg")
+                    .attr("id", row+"legend"+i)
                 svg.append("g").attr("id", row+i+"x")
                 svg.append("g").attr("id", row+i+"y")
                 let temp = svg.append("g").attr("id", row+i+"z")
@@ -507,30 +517,30 @@ class Stats {
         }
     }
 
-    updateLegend() {
+    updateLegend(name) {
 
         let width = 400;
         let height = 50;
 
         //Set chart to be responsive
         for (let i = 1; i <= 4; i++) {
-            let svg = d3.select("#legend"+i)
+            let svg = d3.select("#"+name+"legend"+i)
                 .attr("preserveAspectRatio", "xMinYMin meet")
                 .attr("viewBox","0 0 "+width+", "+height*1.2);
             svg.selectAll("g").remove();
         }
 
-        let legendgroup1 = d3.select("#legend1").append("g")
-            .attr("id", "statslegend1")
+        let legendgroup1 = d3.select("#"+name+"legend1").append("g")
+            .attr("id", name+"legend1")
             .attr("transform", "translate("+(width / 4)+", "+(height / 4)+")");
-        let legendgroup2 = d3.select("#legend2").append("g")
-            .attr("id", "statslegend2")
+        let legendgroup2 = d3.select("#"+name+"legend2").append("g")
+            .attr("id", name+"legend2")
             .attr("transform", "translate("+(width / 4)+", "+(height / 4)+")");
-        let legendgroup3 = d3.select("#legend3").append("g")
-            .attr("id", "statslegend3")
+        let legendgroup3 = d3.select("#"+name+"legend3").append("g")
+            .attr("id", name+"legend3")
             .attr("transform", "translate("+(width / 3)+", "+(height / 4)+")");
-        let legendgroup4 = d3.select("#legend4").append("g")
-            .attr("id", "statslegend4")
+        let legendgroup4 = d3.select("#"+name+"legend4").append("g")
+            .attr("id", name+"legend4")
             .attr("transform", "translate("+(width / 15)+", "+(height / 4)+")");
 
         let colorScale12 = d3.scaleOrdinal()
