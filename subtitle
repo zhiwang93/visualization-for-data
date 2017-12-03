@@ -1,0 +1,65 @@
+This is a visualization for flight on-time performance of the United States in 2016.
+
+The main interface is a map showing all the airports in the US.
+
+They are clustered into three groups, small airports, medium airports and large airports.
+
+You can hover over any of the airports to see the name and city and click to see the details.
+
+Moreover, you can also use the search bar to search for an airport.
+
+IATA code, ICAO code and name of city will all be accepted as keyword.
+
+In the map there are lines indicating flights to or from that airport.
+
+In the panel to the right, you can find information like municipality, coordinate, elevation and statistics like flight count, average delay, delay rate and cancel rate of that airport.
+
+In the bottom, there is a donut chart showing the percentage of causes of delay of the specific airport.
+
+Some airports do not have operation data, just like Provo.
+
+Only basic information will be displayed for these airports.
+
+Uncheck "Show All Airports" to filter out those airports.
+
+Click "Clear Map" to clear all the lines in the Map.
+
+You may also change the geographic map to a node-link map, where one node indicates an airport and the links indicate the flight connections.
+
+Airports are colored by their average departure delay times. 
+
+We can see Salt Lake City did a pretty good job in on-time performance.
+
+And Atlanta is a critical node with a bunch of flight connections.
+
+The two maps are connected together - clicking on one will also affect another.
+
+Right below are the statistical charts for that airport.
+
+They will change values as you select different airports.
+
+Click the title to collapse or expand the panel.
+
+Within each part, there are four charts, outbound flight distribution, inbound flight distribution, departure and arrival delay and percentage of causes of delay.
+
+Those four charts are illustrated monthly, daily and hourly respectively in these three panels.
+
+The last part is a hierarchy layout showing the flight connections of the United States.
+
+Airports are grouped by states.
+
+You can hover over the airport to see the details as well as the cities it connects to.
+
+Red line indicates a two-way connection, while yellow and green line indicate inbound and outbound connections respectively.
+
+For Washington Dulles International Airport, we can see there are outbound flights to San Antonio, inbound flights from Jacksonville and two-way flights to and from some other airports.
+
+
+
+
+Last but not least, this is also a responsive website which not only support your pc and Mac perfectly but your portable devices as well.
+
+
+If you are interested, please follow the link to visit my website.
+
+
